@@ -7,6 +7,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib.ticker import FuncFormatter, NullFormatter  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
@@ -43,6 +44,7 @@ def curve(ax, blk, key, **kw):
 
 def loglog(ax, xl="physical error rate p (%)", yl="logical error rate per shot"):
     ax.set_xscale("log"), ax.set_yscale("log")
+    ax.xaxis.set_minor_formatter(NullFormatter())
     ax.set_xticks([0.1, 0.2, 0.5, 1.0], ["0.1", "0.2", "0.5", "1"])
     ax.set_xlabel(xl)
     if yl:
@@ -108,6 +110,7 @@ def main():
                     curve(ax, g, k)
             loglog(ax, yl="logical error rate per shot" if d == gs[0] else None)
             ax.set_xticks([0.2, 0.4, 0.8], ["0.2", "0.4", "0.8"])
+            ax.xaxis.set_minor_formatter(NullFormatter())
             ax.set_title(f"d = {d}, uniform depolarizing")
         axes[0][0].legend(fontsize=6.5)
         save(fig, "generalization")
@@ -125,7 +128,7 @@ def main():
 
     models = [m for m in R["models"] if m["curve"]]
     if models:
-        fig, axes = plt.subplots(1, len(ds), figsize=(2.6 * len(ds), 2.5), squeeze=False)
+        fig, axes = plt.subplots(1, len(ds), figsize=(2.75 * len(ds), 2.5), squeeze=False)
         for ax, d in zip(axes[0], ds):
             for m in models:
                 if str(m["distance"]) == d:
@@ -133,6 +136,12 @@ def main():
                             lw=1, label=NAME[m["kind"]] if m["seed"] == 0 else None)
                     ax.axhline(m["val_mwpm"], color=COL["mwpm"], lw=.8, ls="--")
             ax.set_yscale("log"), ax.set_xlabel("training shots (millions)"), ax.set_title(f"d = {d}")
+            ax.set_yticks([0.04, 0.05, 0.07, 0.1, 0.2, 0.3])
+            ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{100 * v:g}%"))
+            ax.yaxis.set_minor_formatter(NullFormatter())
+            lo = min(min(v for _, v in m["curve"]) for m in models if str(m["distance"]) == d)
+            hi = max(max(v for _, v in m["curve"]) for m in models if str(m["distance"]) == d)
+            ax.set_ylim(min(lo, 0.045) * 0.93, hi * 1.07)
             if d == ds[0]:
                 ax.set_ylabel("validation error at p = 0.5%")
         axes[0][0].legend(fontsize=7)

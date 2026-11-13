@@ -64,3 +64,26 @@ Es la técnica habitual de «decodificador de alto nivel» y se explica en la we
 No hay LaTeX en el entorno y no se puede instalar sin coste de tiempo grande. El
 informe se maqueta en HTML con estilo de artículo y se imprime a PDF. Reproducible
 con `make report`.
+
+## D15 · Disparos de test: 200 000 por punto también en d = 3
+El diseño preveía 500 000 para d = 3. La inferencia de seis redes sobre 8 valores de p
+tardaba más que el propio entrenamiento. Con 200 000 los intervalos siguen siendo
+estrechos (cociente red/MWPM con ±1–2 %). `baseline.json` conserva los 500 000 de d = 3.
+
+## D16 · Menos semillas donde el cálculo no cabe (desviación del diseño)
+El rendimiento real con cuatro trabajos en paralelo fue unas 2,5 veces menor que el
+del piloto: la RT de d = 5 necesita 2,2 horas de CPU por semilla. Aplicando la regla
+prevista en `EXPERIMENT.md` («si no cabe, se reduce y se dice»):
+- RT d = 5: 2 semillas en vez de 3.
+- CNN d = 7: 2 semillas (como estaba previsto).
+- RT d = 7: **no se entrena**. Con el presupuesto vería 1,5 millones de disparos, menos
+  de lo que la RT de d = 5 necesita solo para empezar a aprender. Se declara como
+  «no cabe en el presupuesto», no como «no funciona».
+Decidido con los entrenamientos de d = 5 a medias (se conocían sus curvas de validación
+parciales) y antes de cualquier evaluación sobre los disparos de test de d = 5 o d = 7.
+
+## D17 · Puntos de control en el entrenamiento
+El entorno de cálculo se reinició durante los entrenamientos. Se añadieron puntos de
+control: una ejecución interrumpida se reanuda con un flujo de datos nuevo y queda
+marcada (`resumed_at`) en los metadatos. La reproducibilidad exacta solo se garantiza
+para ejecuciones no interrumpidas; las reanudadas se señalan con * en la web.

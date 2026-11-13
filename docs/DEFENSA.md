@@ -426,3 +426,229 @@ verdad harían falta distancias mucho mayores. Di siempre «cruce a tamaño fini
 4. Nuestro contador de fallos coincide con `sinter`, la herramienta oficial.
 5. El código JavaScript de la web da el mismo peso de emparejamiento que
    PyMatching y las mismas salidas que PyTorch.
+
+---
+
+## 5. Los resultados, en números que debes saberte
+
+Todo con ruido de circuito SI1000, 200 000 disparos de test por punto, los mismos
+para todos los decodificadores. «Cociente» = errores lógicos de la red divididos
+entre los de la referencia. Menor que 1: gana la red.
+
+| Distancia | Red | Frente a MWPM | Frente a emparejamiento correlacionado |
+|---|---|---|---|
+| 3 | CNN | **0,82 – 0,96** (gana siempre) | 0,79 – 0,98 (gana siempre) |
+| 3 | RT | **0,87 – 0,97** (gana siempre) | 0,84 – 0,99 (gana siempre) |
+| 5 | CNN | **0,81 – 0,96**, empate en p = 1 % | **1,04 – 1,09** (pierde; empate en p = 0,1 %) |
+| 5 | RT | **1,3 – 2,9** (pierde) | 1,3 – 3,4 (pierde) |
+| 7 | CNN | **1,4 – 16** (pierde) | 1,4 – 43 (pierde) |
+| 7 | RT | no entrenada (no cabía en el presupuesto) | |
+
+Los rangos recorren p de 1 % (extremo cercano a 1) a 0,1 %.
+
+En p = 0,3 %, el punto de referencia de la web:
+
+- d = 3: CNN 0,88 [0,87 – 0,89].
+- d = 5: CNN 0,82 [0,81 – 0,84] frente a MWPM; 1,05 [1,03 – 1,07] frente al correlacionado.
+- d = 7: CNN 4,72 [4,57 – 4,90].
+
+Otros números:
+
+- **Cruces (umbral a tamaño finito), SI1000:** MWPM 0,47 % (d = 3–5) y 0,53 % (5–7).
+  Correlacionado 0,53 % y 0,59 %. CNN 0,47 % (3–5) y **sin cruce** entre 5 y 7.
+  La RT «cruza» en 0,17 %, pero es un artefacto de estar mal entrenada en d = 5.
+- **Latencia (un núcleo, en lote):** MWPM 0,3 µs (d = 3), 2,4 µs (d = 5), 8,5 µs
+  (d = 7). Redes: 53–94 µs, 176–206 µs, 507 µs. Es decir, **entre 60 y 320 veces
+  más lentas**. Disparo a disparo: 0,5–1,6 ms frente a 3–14 µs.
+- **Ruido no visto (despolarizante uniforme):** en d = 3 las redes siguen ganando
+  a MWPM incluso informado (0,87–0,92). En d = 5 la CNN mantiene ventaja sobre
+  MWPM para p ≥ 0,4 % y la pierde frente al correlacionado (1,12–1,37). MWPM con
+  pesos del ruido equivocado solo empeora un 2–13 %.
+- **Más rondas que en el entrenamiento (RT):** falla. Con 4 veces más rondas, 2,4
+  veces el error de MWPM en d = 3.
+- **Coste:** 13 modelos, 12,4 horas de CPU en total. CNN d = 3: 35 min. CNN d = 5:
+  93 min. RT d = 5: 72 min. CNN d = 7: 58 min.
+- **Tamaños:** CNN 180 000 (d = 3), 253 000 (d = 5), 561 000 (d = 7) parámetros. RT
+  39 000 (d = 3), 23 000 (d = 5). AlphaQubit tiene del orden de millones y se
+  entrenó con miles de millones de ejemplos.
+- **Simulador web (ruido solo en datos):** la CNN comete 0,89 veces los errores de
+  MWPM en d = 3 y 0,70 en d = 5 (con 8 % de error por qubit).
+
+**La historia en tres frases.** En d = 3 la red gana a todo. En d = 5 gana al
+MWPM básico pero pierde contra la versión mejorada del clásico. En d = 7, con el
+mismo presupuesto, pierde por mucho. Y siempre es cientos de veces más lenta.
+
+**Hipótesis previas** (escritas antes de medir, en `EXPERIMENT.md`): H1 confirmada;
+H2 a medias (la CNN aún gana a MWPM en d = 5, la RT no); H3 confirmada; H4
+confirmada (y decisiva en d = 5); H5 confirmada; **H6 refutada en d = 3**: esperaba
+que las redes generalizaran peor a otro ruido que MWPM, y en d = 3 no fue así.
+Dilo: equivocarse en una hipótesis escrita de antemano y contarlo es buena señal.
+
+---
+
+## 6. Las 20 preguntas más probables, con respuesta
+
+**1. ¿Qué has hecho exactamente, en una frase?**
+He reproducido a pequeña escala y en CPU la comparación entre decodificadores
+neuronales y MWPM en el código de superficie, con la misma estadística para todos,
+y lo he publicado todo, incluidas las derrotas de la red.
+
+**2. ¿Qué hay de nuevo aquí?**
+Nada en cuanto a ciencia. El resultado se conoce desde hace años y AlphaQubit lo
+llevó mucho más lejos. Lo que aporto es una versión pequeña, abierta y
+reproducible con un comando, con una web para entenderlo. Es un ejercicio de
+aprendizaje hecho con rigor.
+
+**3. ¿Por qué la red gana a MWPM en d = 3?**
+Porque MWPM trata los errores X y Z como independientes y busca la cadena más
+probable, no la clase lógica más probable. Con ruido de circuito hay correlaciones
+(errores Y, errores de gancho en las puertas CNOT) que el grafo de emparejamiento
+no representa. Con solo 24 detectores, unos millones de ejemplos bastan para que
+una red pequeña aprenda esas correlaciones y se acerque al decodificador óptimo.
+
+**4. ¿Y por qué pierde en d = 7?**
+Por presupuesto. El número de detectores crece como d³ (24, 120, 336) y los
+patrones que hay que distinguir crecen mucho más rápido. A la vez, mi velocidad de
+entrenamiento cayó de miles de disparos por segundo a unos cientos. En d = 7 la
+red vio 3 millones de ejemplos; los trabajos publicados usan miles de millones.
+MWPM no necesita entrenar: lleva la geometría del código incorporada.
+
+**5. ¿Has comparado con un rival justo? MWPM sin correlaciones es flojo.**
+Por eso incluí *correlated matching* de PyMatching como segunda referencia. Y
+cambia la conclusión: en d = 5 mi CNN gana al MWPM básico (0,82) pero pierde contra
+el correlacionado (1,05). Además, MWPM recibe el modelo de errores exacto del ruido
+de test, que es su mejor caso. No he comparado con decodificadores de redes
+tensoriales ni con *belief-matching*, que son aún mejores.
+
+**6. ¿Cómo sabes que la diferencia no es ruido estadístico?**
+Todos los decodificadores ven los mismos 200 000 disparos, así que comparo
+disparo a disparo. El cociente lleva un intervalo *bootstrap* emparejado al 95 %
+y hay un test de McNemar guardado. En d = 3, p = 0,3 %: 0,88 con intervalo
+[0,87 – 0,89]. Y hay tres semillas de entrenamiento que coinciden en ±1 %.
+
+**7. ¿Por qué SI1000 y no despolarizante estándar?**
+Porque se parece más a un chip superconductor: la medida es lo que peor va (5p) y
+esperar durante una medida también cuesta (2p). Es el modelo que usan varios de
+los artículos recientes, así que facilita comparar. El despolarizante uniforme lo
+uso como ruido «no visto» para medir generalización.
+
+**8. ¿Tu SI1000 es el de verdad?**
+No del todo, y lo digo en todas partes: aplico las tasas de SI1000 al circuito con
+puertas CX que genera Stim. La definición original usa CZ. Las probabilidades son
+las mismas; la compilación no. No cambia la conclusión cualitativa, pero mis
+números no son comparables al decimal con los de un artículo que use CZ.
+
+**9. ¿Qué umbral obtienes y cómo lo comparas con la literatura?**
+Cruces de MWPM en 0,47 % (d = 3–5) y 0,53 % (d = 5–7). Lo publicado para SI1000
+con emparejamiento ronda el 0,45–0,5 %. Pero insisto: son cruces a tamaño finito,
+no el umbral asintótico. Para eso hacen falta distancias mucho mayores y un
+análisis de escalado de tamaño finito.
+
+**10. ¿Por qué el cruce de tu RT sale en 0,17 %? ¿Tu red tiene peor umbral?**
+No se puede concluir eso. Mi RT de d = 5 está mal entrenada (pierde contra la de
+d = 3 casi en todo el rango), así que su curva queda artificialmente alta y cruza
+muy pronto. Es un artefacto del presupuesto de entrenamiento. Lo dejo publicado
+con esa advertencia en vez de esconderlo.
+
+**11. ¿Qué arquitectura usa AlphaQubit y en qué se diferencia la tuya?**
+AlphaQubit es un transformer recurrente: un estado por estabilizador, actualizado
+en cada ronda con atención y convoluciones, preentrenado con datos simulados y
+afinado con datos reales de Sycamore, usando además información analógica de la
+medida. Mi RT copia la idea central (estado por estabilizador + atención +
+recurrencia) y nada más: es unas mil veces más pequeña, sin convoluciones dentro
+del bloque, sin información analógica, sin datos reales y entrenada minutos.
+
+**12. ¿Por qué tu RT pierde contra tu CNN, si AlphaQubit es un transformer?**
+Por coste por paso. En CPU mi RT de d = 5 procesa la mitad de ejemplos por segundo
+que la CNN y pasó buena parte del entrenamiento en una meseta. Seguía mejorando
+cuando se acabó el presupuesto, y sus dos semillas difieren mucho (1,5 y 2,5 veces
+MWPM), señal de que está lejos de converger. No dice nada contra la arquitectura.
+
+**13. ¿Se podría usar tu red en un chip real?**
+No. Tres motivos: es entre 60 y 320 veces más lenta que PyMatching y a tres
+órdenes de magnitud del microsegundo por ronda; da una respuesta al final del
+experimento, no ronda a ronda (no es un decodificador en tiempo real ni por
+ventanas); y solo ha visto ruido simulado, sin fugas ni diafonía.
+
+**14. ¿Qué pasa si el ruido real no es el de entrenamiento?**
+Lo medí con ruido despolarizante uniforme. En d = 3 las redes siguen ganando,
+cosa que no esperaba. En d = 5 la ventaja se reduce y frente al correlacionado
+empeora (hasta 1,37). Y hay un fallo claro: la RT no generaliza a más rondas de
+las que vio (2,4 veces peor que MWPM con 4 veces más rondas), aunque comparte
+pesos entre rondas. Los trabajos publicados entrenan con números de rondas
+variados para conseguirlo; yo no lo hice.
+
+**15. ¿Por qué solo memoria en base Z?**
+Para reducir el cálculo a la mitad. Por la simetría del código de superficie la
+base X se comporta de forma equivalente con este ruido. Es una limitación
+declarada. Tampoco hay puertas lógicas ni cirugía de retícula.
+
+**16. ¿Cómo sé que tu simulación está bien y no tienes un error en los circuitos?**
+Cuatro comprobaciones automáticas: MWPM corrige el 100 % de los fallos
+individuales del modelo de errores en d = 3 y 5; el umbral con ruido solo en los
+datos sale en 9,6–9,8 % frente al 10,3 % publicado; el cruce con ruido de
+circuito cae donde dice la literatura; y mi recuento de errores coincide con
+`sinter`. Hay 52 tests en Python y más de 3000 comprobaciones en JavaScript.
+
+**17. ¿Qué es un evento de detección y por qué no usas el síndrome directamente?**
+Es el cambio de una comprobación entre dos rondas consecutivas. Con medidas
+defectuosas, el valor absoluto de una comprobación no es fiable; el cambio sí
+localiza un fallo en el espacio y en el tiempo. Un error de medida produce dos
+eventos seguidos en el tiempo en la misma casilla.
+
+**18. ¿Cuánto has hecho tú y cuánto la IA?**
+El proyecto se ha construido con ayuda sustancial de herramientas de IA
+(programación, redacción y análisis), y lo digo en la web, en el informe y en el
+repositorio. Mi parte es haberlo definido, entender cada pieza hasta poder
+explicarla aquí, comprobar los resultados y responder de ellos. *(Diego: esta
+respuesta solo es honesta si de verdad has hecho ese trabajo. Hazlo antes de
+enseñar el proyecto.)*
+
+**19. ¿Qué harías con una GPU y un mes?**
+Primero, entrenar d = 5 y d = 7 mucho más para separar «falta de presupuesto» de
+«falta de arquitectura». Segundo, entrenar la RT con rondas variables. Tercero,
+probar con los datos públicos de Sycamore. Cuarto, un híbrido: que la red ajuste
+los pesos del grafo y MWPM haga el emparejamiento, para heredar su velocidad.
+
+**20. ¿Qué has aprendido que no esperabas?**
+Que elegir bien al rival cambia el titular (en d = 5, de «gano» a «pierdo»). Que
+una hipótesis mía (H6) era falsa en d = 3. Y que lo difícil no fue entrenar la
+red sino montar una comparación en la que me pudiera fiar de la diferencia.
+
+Preguntas de física que también pueden caer (respuestas en la sección 1):
+qué es un estabilizador, por qué medir el síndrome no destruye el estado, por qué
+la distancia d corrige (d−1)/2 errores, qué es un operador lógico, por qué existe
+un umbral.
+
+---
+
+## 7. Lo que nunca debes afirmar
+
+1. **«He creado un decodificador mejor que MWPM.»** Falso en general. Gana en
+   d = 3, pierde contra el correlacionado en d = 5 y pierde por mucho en d = 7.
+2. **«Es investigación nueva» / «he descubierto…».** Es una reproducción.
+3. **«He reproducido AlphaQubit.»** No. He reproducido el *patrón cualitativo* con
+   una red inspirada en su idea, mil veces menor, sin datos reales.
+4. **«Mi red tiene un umbral de X %.»** Solo hay cruces a tamaño finito con
+   distancias 3–7, y el de la RT es un artefacto.
+5. **«Las redes neuronales son mejores (o peores) que MWPM.»** Depende de la
+   distancia, del presupuesto y del rival. Tu resultado solo vale para tu montaje.
+6. **«Funcionaría en un ordenador cuántico real.»** Solo ruido simulado, sin
+   tiempo real, cientos de veces demasiado lenta.
+7. **«Las redes son demasiado lentas para tiempo real.»** Tampoco. *Las tuyas*, en
+   PyTorch sobre CPU, lo son. AlphaQubit 2 informa de tiempo real en aceleradores.
+8. **«La RT es peor arquitectura que la CNN.»** Solo que con tu presupuesto en CPU
+   rindió peor.
+9. **«El modelo de ruido es SI1000»** sin añadir «aplicado al circuito con CX».
+10. **«Los resultados son reproducibles bit a bit.»** Solo las ejecuciones no
+    interrumpidas, en la misma máquina. Cuatro modelos de d = 5 se reanudaron
+    desde un punto de control y están marcados.
+11. **«Lo hice yo solo.»** Se hizo con ayuda sustancial de IA. Dilo siempre.
+12. **Cualquier cifra que no esté en `results/summary.json`.** Si no la
+    encuentras ahí, no la digas.
+13. **Citar un artículo que no has abierto.** Varias referencias de `RESEARCH.md`
+    están marcadas [M] (de memoria). Compruébalas antes de nombrarlas.
+14. **«QuTech / Google / etc. usan esto.»** No tienes ninguna relación con ellos.
+
+Si te preguntan algo que no sabes: «No lo sé. Lo que sí medí es…». En una
+entrevista con investigadores, eso puntúa más que improvisar.

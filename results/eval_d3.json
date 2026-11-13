@@ -3671,5 +3671,23 @@
    }
   }
  ],
- "seconds": 1628.9
+ "seconds": 1628.9,
+ "latency": {
+  "mwpm": {
+   "per_shot_single": 3.115630000441646e-06,
+   "per_shot_batched": 2.891291503992477e-07
+  },
+  "corr": {
+   "per_shot_single": 4.0427633333213935e-06,
+   "per_shot_batched": 8.909973145954098e-07
+  },
+  "cnn_s0": {
+   "per_shot_single": 0.00052622672332897,
+   "per_shot_batched": 9.357784863306406e-05
+  },
+  "rt_s0": {
+   "per_shot_single": 0.0005057104533383002,
+   "per_shot_batched": 5.2723809570220936e-05
+  }
+ }
 }

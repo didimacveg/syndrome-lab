@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Syndrome Lab: a small open reproduction of neural decoding for the surface code</title>
+<style>
+  @page { size: A4; }
+  body { font: 10.3pt/1.42 Georgia, "Times New Roman", serif; color: #111; margin: 0; text-align: justify; hyphens: auto; }
+  h1 { font-size: 19pt; line-height: 1.2; text-align: center; margin: 0 0 8pt; hyphens: none; }
+  .authors { text-align: center; font-size: 10.5pt; margin-bottom: 2pt; } .aff { text-align: center; font-size: 9pt; color: #555; margin-bottom: 12pt; }
+  .abstract { margin: 0 10mm 12pt; font-size: 9.6pt; } .abstract b { font-variant: small-caps; letter-spacing: .03em; }
+  h2 { font-size: 12pt; margin: 14pt 0 5pt; break-after: avoid; text-align: left; } h3 { font-size: 10.5pt; margin: 10pt 0 3pt; break-after: avoid; font-style: italic; font-weight: normal; text-align: left; }
+  p { margin: 0 0 6pt; } ul, ol { margin: 0 0 6pt; padding-left: 16pt; } li { margin-bottom: 2pt; }
+  figure { margin: 8pt 0 10pt; break-inside: avoid; text-align: center; } figure img { max-width: 100%; }
+  figcaption, .cap { font-size: 8.8pt; color: #333; text-align: left; margin-top: 3pt; line-height: 1.3; }
+  table { border-collapse: collapse; margin: 6pt auto 3pt; font: 8.3pt/1.25 "Helvetica Neue", Arial, sans-serif; break-inside: avoid; }
+  th, td { padding: 2.5pt 6pt; text-align: right; border-bottom: .4pt solid #ccc; white-space: nowrap; } th { border-bottom: .8pt solid #111; border-top: .8pt solid #111; font-weight: 600; }
+  td:first-child, th:first-child { text-align: left; } td.win { color: #0a6b3f; font-weight: 600; } td.lose { color: #b3261e; font-weight: 600; }
+  .box { border: .6pt solid #999; padding: 6pt 9pt; margin: 8pt 0; font-size: 9.6pt; background: #f6f7f9; break-inside: avoid; }
+  code { font: 8.6pt Menlo, Consolas, monospace; } .refs { font-size: 8.8pt; text-align: left; } .refs li { margin-bottom: 3pt; }
+  a { color: #1a4fa0; text-decoration: none; }
+</style></head><body>
+<h1>Syndrome Lab: a small, open, CPU-only reproduction of neural decoding for the surface code</h1>
+<div class="authors">Diego Macías Vega</div>
+<div class="aff">Secondary-school student, Madrid · built with substantial assistance from AI coding tools · {{DATE}}<br>Code, data and trained weights: github.com/didimacveg/qec-lab</div>
+
+<div class="abstract"><b>Abstract.</b> Decoding is a bottleneck of quantum error correction, and neural-network decoders are an active research topic. This report documents a deliberately small reproduction of a known result, and makes no claim of novelty. On the rotated surface code at distances 3, 5 and 7, under SI1000 circuit-level noise, we train two compact neural decoders on a 4-core CPU (a 3D convolutional network and a recurrent transformer) and compare them with minimum-weight perfect matching (MWPM) and with correlated matching, both from PyMatching, on identical test shots, with several training seeds, Wilson confidence intervals and paired statistics. The setup is validated against published thresholds. The outcome reproduces the pattern reported in the literature: the networks outperform matching at the smallest distance, and their advantage erodes as the distance grows under a fixed, small training budget, while their decoding latency on a CPU is orders of magnitude worse. All wins and losses are reported. Everything can be regenerated with one command.</div>
+
+<div class="box"><b>Scope statement.</b> This is not new research. It is a reproduction for learning and for transparency: small codes, simulated noise, modest networks, a few CPU-hours. Nothing here supports claims about large codes, real devices or real-time operation.</div>
+
+<h2>1. Problem</h2>
+<p>A fault-tolerant quantum computer stores each logical qubit in many physical qubits and repeatedly measures parity checks (stabilizers) to detect errors without disturbing the encoded state. The surface code is the leading candidate for superconducting hardware: a distance-<i>d</i> rotated surface code uses <i>d</i><sup>2</sup> data qubits and <i>d</i><sup>2</sup>−1 checks, and corrects any ⌊(<i>d</i>−1)/2⌋ errors. The measured checks form the <i>syndrome</i>. A classical program, the <i>decoder</i>, must infer from the syndrome which correction preserves the logical state. If the physical error rate <i>p</i> is below a <i>threshold</i>, increasing <i>d</i> suppresses the logical error rate exponentially; above it, larger codes are worse. The threshold depends on the decoder, so better decoding directly relaxes hardware requirements. Decoders must also be fast: about one microsecond per syndrome round on superconducting devices.</p>
+<p>The standard decoder, MWPM [1, 2], pairs up detection events with chains of minimum total weight. It is fast and well understood, but it treats X-type and Z-type errors independently and returns the single most likely error rather than the most likely logical class. Neural decoders can in principle learn the correlations that matching ignores. The question examined here is narrow: <i>with a budget of CPU-hours, how far does that advantage go, and what does it cost?</i></p>
+
+<h2>2. Prior work</h2>
+<p>Neural decoding of topological codes dates back to at least 2017 (Torlai and Melko; Krastanov and Jiang; Baireuther et al.). The current reference is AlphaQubit [3], a recurrent transformer that outperformed correlated matching and tensor-network decoding on Sycamore experimental data at distances 3 and 5 and was studied on simulated data up to distance 11, at the price of a very large training effort and of latency unsuited to real time. Follow-up work targets scalability and speed: AlphaQubit 2 [4] reports real-time decoding of surface codes up to distance 11 and of colour codes on commercial accelerators; Lee, Hur and Park [5] replace attention by a Mamba state-space core to reduce the cost per round and validate on the public Sycamore data and on SI1000 simulations. Convolutional decoders for circuit noise [6], neural pre-decoders [7] and critical assessments of when neural decoders pay off [8] are part of the same picture. The closest antecedent of this report is the QuTech work of Varbanov et al. [9], a recurrent network for small-distance surface codes under circuit-level noise, benchmarked against PyMatching with Stim-generated data.</p>
+<p>What this report adds is not a method. It is a compact, fully open pipeline with an explicitly fair comparison protocol, negative results included, that runs on a laptop-class CPU, together with an interactive visual explanation.</p>
+
+<h2>3. Method</h2>
+<h3>3.1 Codes, circuits and noise</h3>
+<p>We use Stim [10] to generate rotated surface-code memory experiments in the Z basis with <i>d</i> rounds of syndrome extraction, for <i>d</i> = 3, 5, 7 (24, 120 and 336 detectors). The main noise model is SI1000 [11], a one-parameter circuit-level model inspired by superconducting hardware: two-qubit gates are followed by two-qubit depolarizing noise of strength <i>p</i>, one-qubit gates by <i>p</i>/10, resets fail with probability 2<i>p</i>, measurement outcomes flip with probability 5<i>p</i>, qubits idling during gate layers depolarize with <i>p</i>/10 and qubits idling during measurement or reset layers with 2<i>p</i>. We apply these rates to Stim's CX-based circuit rather than to a CZ compilation; this is a deviation from the original definition. The sweep covers eight values of <i>p</i> from 0.1% to 1.0%. For out-of-distribution tests we use uniform circuit-level depolarizing noise (all four Stim noise parameters equal to <i>p</i>), which the networks never see in training.</p>
+<h3>3.2 Baselines</h3>
+<p>MWPM and correlated matching are run with PyMatching 2.4 [2]. Both receive the exact detector error model of the test noise at the test value of <i>p</i>. This is the best case for matching: it knows the noise. In the out-of-distribution experiment we also report matching with stale weights taken from the SI1000 model.</p>
+<h3>3.3 Neural decoders</h3>
+<p>Both networks map the detection events of a shot to a single logit, the predicted flip of the logical observable, as in AlphaQubit. Detection events are placed on a (<i>d</i>+1) × (<i>d</i>+1) grid per round using Stim's detector coordinates, giving a volume of <i>d</i>+1 time slices.</p>
+<ul>
+<li><b>CNN.</b> A 3D convolutional stem, a learned positional bias (so the network can tell boundaries and stabilizer types apart), two residual blocks of 3×3×3 convolutions with GELU activations, a 1×1×1 bottleneck and a two-layer head. 32 channels at <i>d</i> = 3, 16 at <i>d</i> = 5 and 7.</li>
+<li><b>RT (recurrent transformer).</b> One state vector per stabilizer. At each round the new detection event is embedded, mixed into the state, and one pre-norm self-attention block with shared weights lets stabilizers exchange information. A mean-pooled read-out produces the logit. Width 64 at <i>d</i> = 3 and 48 at <i>d</i> = 5. Because weights are shared across rounds, the model can be run for more rounds than it was trained on. It follows the idea of AlphaQubit at roughly a thousandth of its size.</li>
+</ul>
+<p>Training uses shots generated on the fly by Stim (no fixed training set, hence no memorization), mixing the eight values of <i>p</i> uniformly, with binary cross-entropy, AdamW, batch size 256, peak learning rate 2·10<sup>−3</sup> with warm-up and cosine decay, and gradient clipping. There is one model per distance, not per value of <i>p</i>. Each model is trained on a single CPU core. Step counts were fixed in advance from a throughput pilot; an equal-wall-time pilot at <i>d</i> = 5 selected the narrower CNN. Model sizes, training shots and CPU time are listed in Table 5.</p>
+<h3>3.4 Evaluation protocol</h3>
+<ul>
+<li><b>Shared test shots.</b> For each (<i>d</i>, <i>p</i>) one test set is sampled with a fixed seed never used in training ({{SHOTS}} shots per point). Every decoder is scored on exactly these shots.</li>
+<li><b>Intervals.</b> Logical error rates per shot carry 95% Wilson intervals.</li>
+<li><b>Paired comparison.</b> For each network and baseline we count shots where only one of them fails. The ratio of failure rates carries a 95% paired bootstrap interval; an exact McNemar test is stored with the results.</li>
+<li><b>Seeds.</b> Three training seeds per model at <i>d</i> = 3; three (CNN) and two (RT) at <i>d</i> = 5; two (CNN) at <i>d</i> = 7. Tables pool failures over seeds; the pooled intervals describe test-set sampling noise, not the spread across trainings, which is shown separately.</li>
+<li><b>Threshold.</b> Crossing of the curves of consecutive distances, by linear interpolation in log-log scale, with a parametric bootstrap interval.</li>
+<li><b>Latency.</b> Wall time per shot on one core, one shot at a time and in batches, measured on an otherwise idle machine.</li>
+</ul>
+
+<h2>4. Validation of the setup</h2>
+<ul>
+<li>MWPM corrects every single fault of the circuit-level detector error model at <i>d</i> = 3 and 5, for both noise models (exhaustive test).</li>
+<li>With independent bit flips on data qubits and perfect measurement, MWPM crossings occur at {{CAPV}}, against the published asymptotic threshold of 10.3% [1, 12]. Small-distance crossings of the rotated code are expected to lie below the asymptotic value.</li>
+<li>Under circuit-level noise the MWPM crossings (Table 3) fall in the published range for this family of models, around 0.5% for SI1000 [11].</li>
+<li>Our Monte Carlo loop agrees with <code>sinter</code>, Stim's sampling tool, within statistical error.</li>
+<li>The automated test suite (52 Python tests, plus JavaScript tests of the browser decoders against PyMatching and PyTorch) runs in continuous integration.</li>
+</ul>
+
+<h2>5. Results</h2>
+<h3>5.1 Logical error rates</h3>
+<figure><img src="figures/main.png" style="width:100%"><figcaption><b>Figure 1.</b> Logical error rate per shot against physical error rate under SI1000 noise. Bands are 95% Wilson intervals; network curves pool failures over training seeds.</figcaption></figure>
+<p>Table 1 gives the ratio of the logical error rate of each network to that of MWPM on the same shots, and Table 2 the same against correlated matching. Values below 1 favour the network. Green entries are significant wins, red entries significant losses, at the 95% level.</p>
+{{RATIO_MWPM}}<p class="cap"><b>Table 1.</b> Network / MWPM, with 95% paired bootstrap intervals.</p>
+{{RATIO_CORR}}<p class="cap"><b>Table 2.</b> Network / correlated matching.</p>
+<figure><img src="figures/ratio.png" style="width:92%"><figcaption><b>Figure 2.</b> The ratios of Tables 1 and 2. The dotted line marks a tie.</figcaption></figure>
+
+<h3>5.2 Threshold crossings</h3>
+<figure><img src="figures/threshold.png" style="width:100%"><figcaption><b>Figure 3.</b> Curves of the three distances for each decoder. Dashed vertical lines mark the crossings of consecutive distances.</figcaption></figure>
+{{CROSSINGS}}<p class="cap"><b>Table 3.</b> Finite-size crossings under SI1000. These are not asymptotic thresholds. A network that is under-trained at the larger distance shows an artificially low crossing or none: this reflects the training budget, not a property of the code.</p>
+
+<h3>5.3 Noise the networks never saw</h3>
+<figure><img src="figures/generalization.png" style="width:100%"><figcaption><b>Figure 4.</b> Networks trained only on SI1000, tested on uniform depolarizing circuit noise. MWPM is shown informed of the new noise and with its old SI1000 weights.</figcaption></figure>
+{{GEN}}<p class="cap"><b>Table 4.</b> Logical error rates under uniform depolarizing noise.</p>
+{{ROUNDS}}<p class="cap"><b>Table 4b.</b> Recurrent model run for more rounds than in training (trained with <i>d</i> rounds), <i>p</i> = 0.3%.</p>
+
+<h3>5.4 Training cost and latency</h3>
+<figure><img src="figures/training.png" style="width:88%"><figcaption><b>Figure 5.</b> Validation error at <i>p</i> = 0.5% during training. Dashed line: MWPM on the same validation shots.</figcaption></figure>
+{{COST}}<p class="cap"><b>Table 5.</b> Every trained model.</p>
+{{LATENCY}}<p class="cap"><b>Table 6.</b> Decoding time per shot on one CPU core. PyMatching is optimized C++; the networks run in plain PyTorch with no quantization or dedicated hardware.</p>
+
+<h3>5.5 Code-capacity noise (the interactive demo)</h3>
+<p>The web demo lets a visitor place Pauli errors on data qubits, which corresponds to code-capacity noise with perfect syndrome measurement. A separate 2D CNN was trained for depolarizing code-capacity noise and predicts the logical class; the displayed correction is the matching correction multiplied by a logical operator when the network disagrees. Against MWPM, {{CAPACITY}} (three seeds, pooled). The gain comes mostly from Y errors, which matching treats as independent X and Z errors.</p>
+<figure><img src="figures/capacity.png" style="width:72%"><figcaption><b>Figure 6.</b> Code-capacity depolarizing noise.</figcaption></figure>
+
+{{DISCUSSION}}
+
+<h2>8. Limitations</h2>
+<ul>
+<li>Distances 3 to 7 only; nothing here extrapolates to the distances needed for useful computation.</li>
+<li>Simulated Pauli noise only: no leakage, crosstalk, drift or experimental data.</li>
+<li>Z-basis memory only; no logical operations.</li>
+<li>SI1000 rates applied to a CX circuit, not the CZ compilation of the original definition.</li>
+<li>Training budgets of at most a few CPU-hours per model, few seeds, and no hyperparameter search beyond a short pilot. The networks are far from the best achievable.</li>
+<li>Some runs were interrupted by restarts of the compute environment and resumed from checkpoints with a fresh data stream; these are flagged in the model metadata. Exact bit-level reproducibility holds only for uninterrupted runs on the same machine.</li>
+<li>The networks output one bit per shot at the end of the experiment. They are not streaming decoders and produce no physical correction.</li>
+<li>Latency figures compare optimized C++ with unoptimized PyTorch on a CPU.</li>
+<li>Crossings from such small distances are biased estimates of the threshold.</li>
+</ul>
+
+<h2>9. Future work</h2>
+<p>Natural next steps, in order of value: training on a GPU to test how much of the distance-5 and distance-7 gap is budget; soft-information and X-basis experiments; evaluation on the public Sycamore and Willow data sets; a hybrid decoder in which a network re-weights the matching graph; and quantized inference to measure latency meaningfully. Separately, LLM agents that design quantum circuits have become an active area in 2026 (for example StabilizerBench [13]); it is outside the scope of this project.</p>
+
+<h2>Reproducibility and acknowledgements</h2>
+<p><code>make test</code> runs the test suite and <code>make all</code> regenerates data, baselines, models, evaluation, figures, site data and this report. Seeds and configurations are in <code>configs/experiment.json</code>; trained weights are in <code>models/</code>. This project relies on Stim, PyMatching, sinter and PyTorch. The code, the text and the analysis were produced with substantial help from AI coding tools; the author is responsible for any errors. Several references below could not be opened online from the build environment and were cited from search results or memory; their status is listed in <code>docs/RESEARCH.md</code>.</p>
+
+<h2>References</h2>
+<ol class="refs">
+<li>E. Dennis, A. Kitaev, A. Landahl, J. Preskill. Topological quantum memory. <i>J. Math. Phys.</i> 43, 4452 (2002).</li>
+<li>O. Higgott, C. Gidney. Sparse Blossom: correcting a million errors per core second with minimum-weight matching. arXiv:2303.15933.</li>
+<li>J. Bausch, A. W. Senior, F. J. H. Heras et al. Learning high-accuracy error decoding for quantum processors. <i>Nature</i> (2024). doi:10.1038/s41586-024-08148-8.</li>
+<li>A. W. Senior, T. Edlich, J. Bausch et al. A scalable and real-time neural decoder for topological quantum codes. arXiv:2512.07737 (2025).</li>
+<li>C. Lee, T. Hur, D. K. Park. Scalable neural decoders for practical real-time quantum error correction. arXiv:2510.22724 (2025).</li>
+<li>Fully convolutional 3D neural network decoders for surface codes with syndrome circuit noise. arXiv:2506.16113 (2025).</li>
+<li>Fast AI-based pre-decoders for surface codes. arXiv:2604.12841 (2026).</li>
+<li>Rethink the role of neural decoders in quantum error correction. ICML 2026.</li>
+<li>B. M. Varbanov, M. Serra-Peralta, D. Byfield, B. M. Terhal. Neural network decoder for near-term surface-code experiments. <i>Phys. Rev. Research</i> 7, 013029 (2025). arXiv:2307.03280.</li>
+<li>C. Gidney. Stim: a fast stabilizer circuit simulator. <i>Quantum</i> 5, 497 (2021).</li>
+<li>C. Gidney, M. Newman, A. Fowler, M. Broughton. A fault-tolerant honeycomb memory. <i>Quantum</i> 5, 605 (2021).</li>
+<li>C. Wang, J. Harrington, J. Preskill. Confinement-Higgs transition in a disordered gauge theory and the accuracy threshold for quantum memory. <i>Ann. Phys.</i> 303, 31 (2003).</li>
+<li>StabilizerBench: a benchmark for AI-assisted quantum error correction circuit synthesis. arXiv:2604.21287 (2026).</li>
+</ol>
+</body></html>

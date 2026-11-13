@@ -40,13 +40,14 @@
     },
     async headline() {
       const R = await fetch('data/results.json').then(r => r.json()), i = R.main['3'].ps.indexOf(0.003);
-      const tiles = Object.keys(R.main).map(d => { const [k, r] = best(R, d, i), v = r.hi < 1 ? 'ok' : r.lo > 1 ? 'bad' : ''; return `<div class="card tile"><h3>distance ${d} · ${k.toUpperCase()}</h3><div class="big">${f2(r.ratio)}×<small>[${f2(r.lo)}, ${f2(r.hi)}]</small></div><div class="verdict ${v}"><b>${v === 'ok' ? '✓' : v === 'bad' ? '✗' : '≈'}</b>${v === 'ok' ? 'network wins' : v === 'bad' ? 'network loses' : 'no clear winner'}</div></div>`; }).join('');
-      frame('04', 'Does the network beat matching?<br><em>It depends on the size.</em>', `Logical errors of the best network divided by those of MWPM, at ${pctx(0.003)} physical error rate. Below 1 the network wins.`, `<div class="col"><div class="pair">${tiles}</div></div>`, 'Same test shots for both. 95% paired bootstrap intervals. CPU-only training.');
+      const tiles = Object.keys(R.main).map(d => { const [k, r] = best(R, d, i), v = r.hi < 1 ? 'ok' : r.lo > 1 ? 'bad' : '', c = R.main[d].ratio[k + '|corr'][i]; return `<div class="card tile"><div><h3>distance ${d} · ${k.toUpperCase()} vs MWPM</h3><div class="big">${f2(r.ratio)}×<small>95% interval [${f2(r.lo)}, ${f2(r.hi)}] · vs correlated matching: ${f2(c.ratio)}×</small></div></div><div class="verdict ${v}"><b>${v === 'ok' ? '✓' : v === 'bad' ? '✗' : '≈'}</b>${v === 'ok' ? 'network wins' : v === 'bad' ? 'network loses' : 'no clear winner'}</div></div>`; }).join('');
+      frame('04', 'Does the network beat matching?<br><em>It depends on the size.</em>', `Logical errors of the best network divided by those of MWPM, at ${pctx(0.003)} physical error rate. Below 1 the network wins.`, `<div class="col">${tiles}</div>`, 'Same test shots for all. Correlated matching is the stronger classical baseline.');
     },
     async curves() {
-      const R = await fetch('data/results.json').then(r => r.json()), d = q.get('d') || '3';
-      frame('05', `Distance ${d}, circuit-level noise`, 'Logical error rate against physical error rate. Lower is better. Bands are 95% intervals.', `<div class="col"><div class="legend">${['mwpm', 'corr', 'cnn', 'rt'].map(k => `<span><i style="background:${COL[k]}"></i>${{ mwpm: 'MWPM', corr: 'Correlated matching', cnn: 'CNN', rt: 'Recurrent transformer' }[k]}</span>`).join('')}</div><div id="ch" style="width:100%"></div></div>`);
-      Charts.line(document.getElementById('ch'), { xlog: true, ylog: true, height: 420, xlabel: 'physical error rate p', ylabel: 'logical error rate', xticks: [0.001, 0.002, 0.005, 0.01], fmtX: pctx, series: ['mwpm', 'corr', 'cnn', 'rt'].filter(k => R.main[d].decoders[k]).map(k => series(R.main[d], k, { marker: { mwpm: 'square', corr: 'diamond', cnn: 'circle', rt: 'triangle' }[k] })) });
+      const R = await fetch('data/results.json').then(r => r.json()), ds = Object.keys(R.main).filter(d => R.main[d].ratio['cnn|mwpm']);
+      frame('05', 'Network vs matching,<br><em>shot for shot.</em>', 'Logical errors of the CNN divided by those of MWPM on identical test shots. Under the dashed line the network wins.', `<div class="col"><div class="legend">${ds.map(d => `<span><i style="background:${DCOL[d]}"></i>distance ${d}</span>`).join('')}</div><div id="ch" style="width:100%"></div></div>`, 'Circuit-level SI1000 noise. Bars: 95% paired bootstrap intervals, seeds pooled.');
+      Charts.line(document.getElementById('ch'), { xlog: true, ylog: true, height: 350, refY: 1, refLabel: 'tie', xlabel: 'physical error rate p', xticks: [0.001, 0.002, 0.005, 0.01], fmtX: pctx, fmtY: v => f2(v) + '×',
+        series: ds.map((d, j) => ({ name: 'd=' + d, color: DCOL[d], bars: true, marker: ['circle', 'square', 'triangle'][j], points: R.main[d].ps.map((p, i) => { const r = R.main[d].ratio['cnn|mwpm'][i]; return { x: p, y: r.ratio, lo: r.lo, hi: r.hi }; }).filter(q => isFinite(q.y) && q.lo > 0) })) });
     },
     async threshold() {
       const R = await fetch('data/results.json').then(r => r.json()), upto = q.get('n') ? +q.get('n') : 99, cross = q.get('x') !== '0';
@@ -54,7 +55,7 @@
       frame('06', 'The threshold:<br><em>where bigger stops helping.</em>', 'Below the crossing a larger code makes fewer logical errors. Above it, more. MWPM, SI1000 noise.', `<div class="col"><div class="legend">${['3', '5', '7'].map(d => `<span><i style="background:${DCOL[d]}"></i>distance ${d}</span>`).join('')}</div><div id="ch" style="width:100%"></div></div>`,
         `Finite-size crossings: ${cr.map(c => c.pair.join('–') + ' at ' + (c.p * 100).toFixed(2) + '%').join(', ')}. Not the asymptotic threshold.`);
       const full = ['3', '5', '7'].flatMap(d => series(R.baseline.si1000[d], 'mwpm').points);
-      Charts.line(document.getElementById('ch'), { xlog: true, ylog: true, height: 420, xlabel: 'physical error rate p', ylabel: 'logical error rate', xticks: [0.001, 0.002, 0.005, 0.01], fmtX: pctx, ymin: Math.min(...full.map(p => p.lo)), ymax: Math.max(...full.map(p => p.hi)),
+      Charts.line(document.getElementById('ch'), { xlog: true, ylog: true, height: 350, xlabel: 'physical error rate p', xticks: [0.001, 0.002, 0.005, 0.01], fmtX: pctx, ymin: Math.min(...full.map(p => p.lo)), ymax: Math.max(...full.map(p => p.hi)),
         vlines: cross ? cr.map(c => ({ x: c.p, label: c.pair.join('–') })) : [],
         series: [{ name: 'frame', color: 'transparent', points: [{ x: 0.001, y: full[0].y }, { x: 0.01, y: full[0].y }] }, ...['3', '5', '7'].map((d, j) => { const s = series(R.baseline.si1000[d], 'mwpm', { name: 'd=' + d, color: DCOL[d], marker: ['circle', 'square', 'triangle'][j] }); s.points = s.points.slice(0, upto); return s; })].filter(s => s.points.length) });
     },
@@ -73,7 +74,7 @@
       const { code, model } = await load(5), cases = await fetch('data/cases.json').then(r => r.json());
       const target = cases.find(c => c.d === 5 && c.kind === 'nnwin').errors, order = target.map((v, i) => [v, i]).filter(x => x[0]);
       const CAP = ['A clean chip: 25 data qubits protect one logical qubit.', 'Errors strike.', 'Errors strike.', 'Errors strike.', 'Only the parity checks can be read. This is the syndrome.', 'Each decoder proposes a correction from the syndrome alone.', 'Matching flipped the logical qubit. The network did not.'];
-      frame('', 'Inject errors.<br><em>Watch two decoders.</em>', '<span id="cap"></span>', `<div class="col"><div style="flex:1;min-height:0;display:flex;justify-content:center">${svg('a')}</div><div class="pair" style="height:330px"><div class="card" style="display:flex;gap:14px;align-items:center"><div style="flex:1;height:100%">${svg('b')}</div><div style="flex:1"><h3><span class="dot" style="background:${COL.mwpm}"></span>MWPM</h3><div id="vb"></div></div></div><div class="card" style="display:flex;gap:14px;align-items:center"><div style="flex:1;height:100%">${svg('c')}</div><div style="flex:1"><h3><span class="dot" style="background:${COL.cnn}"></span>NEURAL NET</h3><div id="vc"></div></div></div></div></div>`, 'Simplest noise model: errors on data qubits, perfect checks.');
+      frame('', 'Inject errors.<br><em>Watch two decoders.</em>', '<span id="cap"></span>', `<div class="col"><div style="flex:1;min-height:0;display:flex;justify-content:center">${svg('a')}</div><div class="pair" style="height:440px"><div class="card"><h3><span class="dot" style="background:${COL.mwpm}"></span>MWPM</h3>${svg('b')}<div id="vb" style="min-height:64px"></div></div><div class="card"><h3><span class="dot" style="background:${COL.cnn}"></span>NEURAL NET</h3>${svg('c')}<div id="vc" style="min-height:64px"></div></div></div></div>`, 'Simplest noise model: errors on data qubits, perfect checks.');
       window.cardSteps = CAP.length;
       window.cardStep = n => {
         const e = new Uint8Array(25); order.slice(0, Math.min(n, order.length)).forEach(([v, i]) => { e[i] = v; });
@@ -92,9 +93,9 @@
       let i = 0, fm = 0, fn = 0;
       window.cardSteps = N / per + 1;
       window.cardStep = () => {
-        let e = new Uint8Array(9), s = QEC.syndrome(code, e);
-        for (let k = 0; k < per && i < N; k++, i++) { e = QEC.randomErrors(code, p, rand); s = QEC.syndrome(code, e); const b = QEC.mwpm(code, s); fm += !QEC.residual(code, e, b.correction).ok; fn += !QEC.residual(code, e, QEC.neural(code, model, s, b).correction).ok; }
-        Lattice.draw(document.getElementById('a'), code, { errors: e, synd: s });
+        let show = new Uint8Array(9);
+        for (let k = 0; k < per && i < N; k++, i++) { const e = QEC.randomErrors(code, p, rand), s = QEC.syndrome(code, e); if (e.some(Boolean)) show = e; const b = QEC.mwpm(code, s); fm += !QEC.residual(code, e, b.correction).ok; fn += !QEC.residual(code, e, QEC.neural(code, model, s, b).correction).ok; }
+        Lattice.draw(document.getElementById('a'), code, { errors: show, synd: QEC.syndrome(code, show) });
         document.getElementById('fm').textContent = fm; document.getElementById('fn').textContent = fn;
         document.getElementById('bm').style.width = (fm / (N * 0.12) * 100) + '%'; document.getElementById('bn').style.width = (fn / (N * 0.12) * 100) + '%';
         document.getElementById('cnt').innerHTML = `${i.toLocaleString()} chips decoded${i >= N ? `. Network / MWPM = <strong>${f2(fn / fm)}×</strong>` : ''}`;

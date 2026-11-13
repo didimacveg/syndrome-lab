@@ -1,4 +1,17 @@
-[cnn d=5 s=2] step 2000/40000 loss 0.2446 val 0.1140 (mwpm 0.0509) 469s
-[cnn d=5 s=2] step 4000/40000 loss 0.2065 val 0.0853 (mwpm 0.0509) 884s
-[cnn d=5 s=2] step 6000/40000 loss 0.1900 val 0.0717 (mwpm 0.0509) 1288s
-[cnn d=5 s=2] step 8000/40000 loss 0.1879 val 0.0669 (mwpm 0.0509) 1673s
+resuming from step 8000
+[cnn d=5 s=2] step 10000/40000 loss 0.1748 val 0.0619 (mwpm 0.0509) 1967s
+[cnn d=5 s=2] step 12000/40000 loss 0.1749 val 0.0632 (mwpm 0.0509) 2236s
+[cnn d=5 s=2] step 14000/40000 loss 0.1688 val 0.0580 (mwpm 0.0509) 2501s
+[cnn d=5 s=2] step 16000/40000 loss 0.1649 val 0.0558 (mwpm 0.0509) 2759s
+[cnn d=5 s=2] step 18000/40000 loss 0.1643 val 0.0546 (mwpm 0.0509) 2962s
+[cnn d=5 s=2] step 20000/40000 loss 0.1620 val 0.0532 (mwpm 0.0509) 3161s
+[cnn d=5 s=2] step 22000/40000 loss 0.1571 val 0.0517 (mwpm 0.0509) 3362s
+[cnn d=5 s=2] step 24000/40000 loss 0.1595 val 0.0491 (mwpm 0.0509) 3564s
+[cnn d=5 s=2] step 26000/40000 loss 0.1517 val 0.0491 (mwpm 0.0509) 3766s
+[cnn d=5 s=2] step 28000/40000 loss 0.1531 val 0.0490 (mwpm 0.0509) 3960s
+[cnn d=5 s=2] step 30000/40000 loss 0.1509 val 0.0476 (mwpm 0.0509) 4153s
+[cnn d=5 s=2] step 32000/40000 loss 0.1545 val 0.0481 (mwpm 0.0509) 4353s
+[cnn d=5 s=2] step 34000/40000 loss 0.1474 val 0.0476 (mwpm 0.0509) 4554s
+[cnn d=5 s=2] step 36000/40000 loss 0.1529 val 0.0466 (mwpm 0.0509) 4750s
+[cnn d=5 s=2] step 38000/40000 loss 0.1495 val 0.0465 (mwpm 0.0509) 4947s
+[cnn d=5 s=2] step 40000/40000 loss 0.1474 val 0.0465 (mwpm 0.0509) 5142s

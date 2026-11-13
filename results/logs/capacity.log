@@ -1,0 +1,63 @@
+3 0.02 {'mwpm': 0.00619, 'cnn_s0': 0.00524, 'cnn_s1': 0.00533, 'cnn_s2': 0.00511}
+3 0.04 {'mwpm': 0.02275, 'cnn_s0': 0.01969, 'cnn_s1': 0.0196, 'cnn_s2': 0.01978}
+3 0.06 {'mwpm': 0.04734, 'cnn_s0': 0.04138, 'cnn_s1': 0.0414, 'cnn_s2': 0.04156}
+3 0.08 {'mwpm': 0.07846, 'cnn_s0': 0.06964, 'cnn_s1': 0.06994, 'cnn_s2': 0.07004}
+3 0.1 {'mwpm': 0.11502, 'cnn_s0': 0.10319, 'cnn_s1': 0.1025, 'cnn_s2': 0.10304}
+3 0.12 {'mwpm': 0.15278, 'cnn_s0': 0.13748, 'cnn_s1': 0.1381, 'cnn_s2': 0.13764}
+3 0.14 {'mwpm': 0.19476, 'cnn_s0': 0.1781, 'cnn_s1': 0.17796, 'cnn_s2': 0.17779}
+3 0.16 {'mwpm': 0.2379, 'cnn_s0': 0.22094, 'cnn_s1': 0.22079, 'cnn_s2': 0.2207}
+3 0.18 {'mwpm': 0.28046, 'cnn_s0': 0.26177, 'cnn_s1': 0.26118, 'cnn_s2': 0.26178}
+[capacity d=5 s=0] step 2000/30000 loss 0.1179 96s
+[capacity d=5 s=0] step 4000/30000 loss 0.1271 197s
+[capacity d=5 s=0] step 6000/30000 loss 0.1171 297s
+[capacity d=5 s=0] step 8000/30000 loss 0.1003 399s
+[capacity d=5 s=0] step 10000/30000 loss 0.1117 501s
+[capacity d=5 s=0] step 12000/30000 loss 0.1183 603s
+[capacity d=5 s=0] step 14000/30000 loss 0.1164 703s
+[capacity d=5 s=0] step 16000/30000 loss 0.0941 802s
+[capacity d=5 s=0] step 18000/30000 loss 0.1231 903s
+[capacity d=5 s=0] step 20000/30000 loss 0.1099 999s
+[capacity d=5 s=0] step 22000/30000 loss 0.1054 1098s
+[capacity d=5 s=0] step 24000/30000 loss 0.1055 1202s
+[capacity d=5 s=0] step 26000/30000 loss 0.1403 1304s
+[capacity d=5 s=0] step 28000/30000 loss 0.1154 1410s
+[capacity d=5 s=0] step 30000/30000 loss 0.1237 1517s
+[capacity d=5 s=1] step 2000/30000 loss 0.1116 105s
+[capacity d=5 s=1] step 4000/30000 loss 0.1189 207s
+[capacity d=5 s=1] step 6000/30000 loss 0.1291 310s
+[capacity d=5 s=1] step 8000/30000 loss 0.1355 416s
+[capacity d=5 s=1] step 10000/30000 loss 0.1067 523s
+[capacity d=5 s=1] step 12000/30000 loss 0.1257 628s
+[capacity d=5 s=1] step 14000/30000 loss 0.1367 731s
+[capacity d=5 s=1] step 16000/30000 loss 0.1229 838s
+[capacity d=5 s=1] step 18000/30000 loss 0.1298 940s
+[capacity d=5 s=1] step 20000/30000 loss 0.1250 1045s
+[capacity d=5 s=1] step 22000/30000 loss 0.1161 1149s
+[capacity d=5 s=1] step 24000/30000 loss 0.1209 1255s
+[capacity d=5 s=1] step 26000/30000 loss 0.1030 1361s
+[capacity d=5 s=1] step 28000/30000 loss 0.1327 1462s
+[capacity d=5 s=1] step 30000/30000 loss 0.1198 1564s
+[capacity d=5 s=2] step 2000/30000 loss 0.1470 98s
+[capacity d=5 s=2] step 4000/30000 loss 0.1350 197s
+[capacity d=5 s=2] step 6000/30000 loss 0.1510 301s
+[capacity d=5 s=2] step 8000/30000 loss 0.1204 406s
+[capacity d=5 s=2] step 10000/30000 loss 0.1206 506s
+[capacity d=5 s=2] step 12000/30000 loss 0.1040 607s
+[capacity d=5 s=2] step 14000/30000 loss 0.1419 711s
+[capacity d=5 s=2] step 16000/30000 loss 0.1171 813s
+[capacity d=5 s=2] step 18000/30000 loss 0.1034 914s
+[capacity d=5 s=2] step 20000/30000 loss 0.1330 1016s
+[capacity d=5 s=2] step 22000/30000 loss 0.0904 1119s
+[capacity d=5 s=2] step 24000/30000 loss 0.1180 1226s
+[capacity d=5 s=2] step 26000/30000 loss 0.1075 1333s
+[capacity d=5 s=2] step 28000/30000 loss 0.1164 1439s
+[capacity d=5 s=2] step 30000/30000 loss 0.1086 1545s
+5 0.02 {'mwpm': 0.00135, 'cnn_s0': 0.00076, 'cnn_s1': 0.00075, 'cnn_s2': 0.00078}
+5 0.04 {'mwpm': 0.00925, 'cnn_s0': 0.00553, 'cnn_s1': 0.00549, 'cnn_s2': 0.00543}
+5 0.06 {'mwpm': 0.02655, 'cnn_s0': 0.01734, 'cnn_s1': 0.01753, 'cnn_s2': 0.01736}
+5 0.08 {'mwpm': 0.05593, 'cnn_s0': 0.03914, 'cnn_s1': 0.03884, 'cnn_s2': 0.03893}
+5 0.1 {'mwpm': 0.09552, 'cnn_s0': 0.06976, 'cnn_s1': 0.06962, 'cnn_s2': 0.06929}
+5 0.12 {'mwpm': 0.14361, 'cnn_s0': 0.11077, 'cnn_s1': 0.10974, 'cnn_s2': 0.11032}
+5 0.14 {'mwpm': 0.1977, 'cnn_s0': 0.15832, 'cnn_s1': 0.15818, 'cnn_s2': 0.15827}
+5 0.16 {'mwpm': 0.25567, 'cnn_s0': 0.21189, 'cnn_s1': 0.20988, 'cnn_s2': 0.21032}
+5 0.18 {'mwpm': 0.3145, 'cnn_s0': 0.2663, 'cnn_s1': 0.26532, 'cnn_s2': 0.26531}

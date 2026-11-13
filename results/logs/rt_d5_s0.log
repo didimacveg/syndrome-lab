@@ -1,0 +1,4 @@
+[rt d=5 s=0] step 1000/20000 loss 0.3819 val 0.2288 (mwpm 0.0509) 395s
+[rt d=5 s=0] step 2000/20000 loss 0.3434 val 0.1934 (mwpm 0.0509) 788s
+[rt d=5 s=0] step 3000/20000 loss 0.3153 val 0.1737 (mwpm 0.0509) 1179s
+[rt d=5 s=0] step 4000/20000 loss 0.2985 val 0.1666 (mwpm 0.0509) 1573s

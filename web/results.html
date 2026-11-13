@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Syndrome Lab · results</title>
+<meta name="description" content="Neural decoders vs MWPM on the rotated surface code under circuit-level noise: logical error rates, thresholds, latency and generalization, with confidence intervals.">
+<meta name="theme-color" content="#070a0f">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="index.html"><i></i>SYNDROME&nbsp;LAB</a>
+  <nav class="main"><a href="index.html" data-i18n="nav.play"></a><a class="on" href="results.html" data-i18n="nav.results"></a><a href="method.html" data-i18n="nav.method"></a></nav>
+  <button class="lang" type="button">ES</button>
+</div></header>
+<main class="wrap">
+<div class="hero">
+  <div class="tag" data-i18n="r.tag"></div>
+  <h1 data-i18n="r.h1"></h1>
+  <p class="lead" data-i18n="r.lead"></p>
+  <p class="honest" data-i18n="hero.honest2"></p>
+</div>
+
+<section><h2 data-i18n="r.head.h"></h2><p data-i18n="r.head.p"></p>
+  <div class="grid g3" id="tiles"></div>
+  <p class="small" style="margin-top:10px" data-i18n="r.head.note"></p>
+</section>
+
+<section><h2 data-i18n="r.main.h"></h2><p data-i18n="r.main.p"></p>
+  <div class="legend" id="leg-main" style="margin-bottom:10px"></div>
+  <div class="grid g3" id="main-charts"></div>
+</section>
+
+<section><h2 data-i18n="r.ratio.h"></h2><p data-i18n="r.ratio.p"></p>
+  <div class="row" style="margin-bottom:10px">
+    <div class="seg" id="sel-net"><button type="button" data-v="cnn">CNN</button><button type="button" data-v="rt">RT</button></div>
+    <span class="small" data-i18n="r.vs"></span>
+    <div class="seg" id="sel-base"><button type="button" data-v="mwpm">MWPM</button><button type="button" data-v="corr" data-i18n="r.corr"></button></div>
+  </div>
+  <div class="grid g2"><div class="card"><div class="legend" id="leg-ratio" style="margin-bottom:6px"></div><div id="ratio-chart"></div></div>
+  <div class="card"><h3 data-i18n="r.ratio.read"></h3><p data-i18n="r.ratio.how"></p><div class="scroll"><table id="ratio-table"></table></div></div></div>
+</section>
+
+<section><h2 data-i18n="r.th.h"></h2><p data-i18n="r.th.p"></p>
+  <div class="row" style="margin-bottom:10px"><div class="seg" id="sel-th"><button type="button" data-v="mwpm">MWPM</button><button type="button" data-v="corr" data-i18n="r.corr"></button><button type="button" data-v="cnn">CNN</button><button type="button" data-v="rt">RT</button></div></div>
+  <div class="grid g2"><div class="card"><div class="legend" id="leg-th" style="margin-bottom:6px"></div><div id="th-chart"></div></div>
+  <div class="card"><h3 data-i18n="r.th.t"></h3><div class="scroll"><table id="th-table"></table></div><p class="small" style="margin-top:10px" data-i18n="r.th.note"></p></div></div>
+</section>
+
+<section><h2 data-i18n="r.gen.h"></h2><p data-i18n="r.gen.p"></p>
+  <div class="legend" id="leg-gen" style="margin-bottom:10px"></div>
+  <div class="grid g3" id="gen-charts"></div>
+  <div class="card" style="margin-top:14px"><h3 data-i18n="r.rounds.h"></h3><p data-i18n="r.rounds.p"></p><div class="scroll"><table id="rounds-table"></table></div></div>
+</section>
+
+<section><h2 data-i18n="r.lat.h"></h2><p data-i18n="r.lat.p"></p>
+  <div class="card"><div class="scroll"><table id="lat-table"></table></div><p class="small" style="margin-top:10px" data-i18n="r.lat.note"></p></div>
+</section>
+
+<section><h2 data-i18n="r.cap.h"></h2><p data-i18n="r.cap.p"></p>
+  <div class="grid g2" id="cap-charts"></div>
+</section>
+
+<section><h2 data-i18n="r.cost.h"></h2><p data-i18n="r.cost.p"></p>
+  <div class="card"><div class="scroll"><table id="cost-table"></table></div></div>
+  <details><summary data-i18n="r.table.h"></summary><div class="scroll"><table id="full-table"></table></div></details>
+</section>
+</main>
+<footer><div class="wrap"><p data-i18n="foot.1"></p><p data-i18n="foot.2"></p></div></footer>
+<script src="js/i18n.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/results.js"></script>
+</body>
+</html>

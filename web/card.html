@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080">
+<meta name="robots" content="noindex">
+<title>Syndrome Lab · card</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  html, body { width: 1080px; height: 1350px; overflow: hidden; }
+  body { font-size: 26px; line-height: 1.45; background-size: auto, 54px 54px, 54px 54px; }
+  #card { position: absolute; inset: 0; padding: 64px 68px 56px; display: flex; flex-direction: column; }
+  .cb { display: flex; justify-content: space-between; align-items: center; font-size: 22px; letter-spacing: .16em; font-weight: 700; }
+  .cb .brand { font-size: 22px; } .cb .brand i { width: 14px; height: 14px; } .cb span.n { color: var(--muted); font-weight: 400; letter-spacing: .08em; }
+  .ch { font-size: 66px; line-height: 1.08; font-weight: 700; letter-spacing: -.025em; margin: 44px 0 18px; }
+  .ch em { font-style: normal; color: var(--accent-2); text-shadow: 0 0 34px rgba(94, 200, 255, .4); }
+  .cs { color: var(--text-2); font-size: 28px; margin: 0 0 26px; max-width: 900px; } .cs strong { color: var(--text); }
+  .cv { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; gap: 28px; }
+  .cv .card { padding: 22px; border-radius: 18px; } .cv svg.lattice { height: 100%; width: auto; max-width: 100%; }
+  .cf { font-size: 20px; color: var(--muted); border-top: 1px solid var(--line-2); padding-top: 18px; display: flex; justify-content: space-between; gap: 20px; }
+  .cf b { color: var(--text-2); font-weight: 500; }
+  .big { font-size: 118px; font-weight: 700; letter-spacing: -.04em; line-height: 1; } .big small { font-size: 26px; color: var(--muted); font-weight: 400; letter-spacing: 0; display: block; margin-top: 10px; }
+  .tile { flex: 1; text-align: left; } .tile h3 { font-size: 22px; } .tile .verdict { font-size: 22px; margin-top: 18px; padding: 12px 14px; }
+  .col { display: flex; flex-direction: column; gap: 22px; width: 100%; height: 100%; justify-content: center; }
+  .pair { display: flex; gap: 24px; width: 100%; } .pair > div { flex: 1; }
+  .pair { align-items: stretch; max-height: 100%; } .pair > .card { display: flex; flex-direction: column; min-height: 0; } .pair > .card > svg.lattice { flex: 1; min-height: 0; height: auto; width: 100%; max-height: 520px; }
+  .cf b { white-space: nowrap; }
+  .pair h3 { font-size: 22px; } .pair .verdict { font-size: 22px; padding: 12px 14px; margin-top: 12px; }
+  .chart text { font-size: 15px; } .chart .title { font-size: 17px; } .legend { font-size: 22px; gap: 8px 26px; } .legend i { width: 26px; height: 5px; }
+  .list { font-size: 30px; color: var(--text-2); line-height: 1.5; } .list div { padding: 14px 0; border-bottom: 1px solid var(--line); display: flex; gap: 18px; } .list b { color: var(--bad); min-width: 30px; } .list .y b { color: var(--ok); }
+  .lat { display: flex; justify-content: space-between; align-items: baseline; font-size: 30px; padding: 16px 0; border-bottom: 1px solid var(--line); } .lat b { font-size: 44px; }
+  .meter { height: 30px; background: var(--line); border-radius: 8px; overflow: hidden; margin-top: 10px; } .meter i { display: block; height: 100%; border-radius: 8px; }
+  .plaq, .qubit circle.body { transition: none; } .plaq.lit { animation: none; } .chain { animation: none; stroke-dashoffset: 0; }
+</style>
+</head>
+<body>
+<div id="card"></div>
+<script src="js/i18n.js"></script>
+<script src="js/qec.js"></script>
+<script src="js/lattice.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/card.js"></script>
+</body>
+</html>

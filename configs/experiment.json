@@ -4,7 +4,7 @@
   "batch": 256,
   "lr": 0.002,
   "test_seed": 20261124,
-  "test_shots": {"3": 500000, "5": 200000, "7": 200000},
+  "test_shots": {"3": 200000, "5": 200000, "7": 200000},
   "jobs": [
     {"kind": "cnn", "d": 3, "seeds": [0, 1, 2], "steps": 20000, "model": {"channels": 32, "blocks": 2}},
     {"kind": "rt",  "d": 3, "seeds": [0, 1, 2], "steps": 30000, "model": {"dim": 64, "heads": 4}},

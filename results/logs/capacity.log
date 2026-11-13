@@ -1,0 +1,34 @@
+[capacity d=3 s=0] step 2000/8000 loss 0.1400 47s
+[capacity d=3 s=0] step 4000/8000 loss 0.1308 87s
+[capacity d=3 s=0] step 6000/8000 loss 0.1602 131s
+[capacity d=3 s=0] step 8000/8000 loss 0.1647 175s
+[capacity d=3 s=1] step 2000/8000 loss 0.1492 45s
+[capacity d=3 s=1] step 4000/8000 loss 0.1212 96s
+[capacity d=3 s=1] step 6000/8000 loss 0.1275 142s
+[capacity d=3 s=1] step 8000/8000 loss 0.1640 192s
+[capacity d=3 s=2] step 2000/8000 loss 0.1594 50s
+[capacity d=3 s=2] step 4000/8000 loss 0.1514 97s
+[capacity d=3 s=2] step 6000/8000 loss 0.1761 146s
+[capacity d=3 s=2] step 8000/8000 loss 0.1513 190s
+3 0.02 {'mwpm': 0.00619, 'cnn_s0': 0.00524, 'cnn_s1': 0.00533, 'cnn_s2': 0.00511}
+3 0.04 {'mwpm': 0.02275, 'cnn_s0': 0.01969, 'cnn_s1': 0.0196, 'cnn_s2': 0.01978}
+3 0.06 {'mwpm': 0.04734, 'cnn_s0': 0.04138, 'cnn_s1': 0.0414, 'cnn_s2': 0.04156}
+3 0.08 {'mwpm': 0.07846, 'cnn_s0': 0.06964, 'cnn_s1': 0.06994, 'cnn_s2': 0.07004}
+3 0.1 {'mwpm': 0.11502, 'cnn_s0': 0.10319, 'cnn_s1': 0.1025, 'cnn_s2': 0.10304}
+3 0.12 {'mwpm': 0.15278, 'cnn_s0': 0.13748, 'cnn_s1': 0.1381, 'cnn_s2': 0.13764}
+3 0.14 {'mwpm': 0.19476, 'cnn_s0': 0.1781, 'cnn_s1': 0.17796, 'cnn_s2': 0.17779}
+3 0.16 {'mwpm': 0.2379, 'cnn_s0': 0.22094, 'cnn_s1': 0.22079, 'cnn_s2': 0.2207}
+3 0.18 {'mwpm': 0.28046, 'cnn_s0': 0.26177, 'cnn_s1': 0.26118, 'cnn_s2': 0.26178}
+[capacity d=5 s=0] step 2000/30000 loss 0.1179 95s
+[capacity d=5 s=0] step 4000/30000 loss 0.1271 191s
+[capacity d=5 s=0] step 6000/30000 loss 0.1171 287s
+[capacity d=5 s=0] step 8000/30000 loss 0.1003 386s
+[capacity d=5 s=0] step 10000/30000 loss 0.1117 486s
+[capacity d=5 s=0] step 12000/30000 loss 0.1183 586s
+[capacity d=5 s=0] step 14000/30000 loss 0.1164 681s
+[capacity d=5 s=0] step 16000/30000 loss 0.0941 777s
+[capacity d=5 s=0] step 18000/30000 loss 0.1231 877s
+[capacity d=5 s=0] step 20000/30000 loss 0.1099 979s
+[capacity d=5 s=0] step 22000/30000 loss 0.1054 1079s
+[capacity d=5 s=0] step 24000/30000 loss 0.1055 1179s
+[capacity d=5 s=0] step 26000/30000 loss 0.1403 1281s

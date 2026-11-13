@@ -1,6 +1,7 @@
 """Neural decoders. All predict logits for logical observable flips from detection events."""
 from __future__ import annotations
 
+import json
 import math
 
 import torch
@@ -114,6 +115,7 @@ def count_parameters(model: nn.Module) -> int:
 
 
 def save(model: nn.Module, path, **meta) -> None:
+    meta = json.loads(json.dumps(meta, default=str))  # plain types only, so files load with weights_only
     torch.save({"config": model.config, "state": model.state_dict(), "meta": meta}, path)
 
 

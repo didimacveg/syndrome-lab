@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Syndrome Lab · play with a quantum chip</title>
+<meta name="description" content="Inject errors into a simulated surface-code chip and watch a classical decoder (MWPM) and a small neural network correct them. An open, CPU-only reproduction.">
+<meta name="theme-color" content="#070a0f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070a0f'/%3E%3Crect x='4' y='4' width='8' height='8' rx='1.5' fill='%235ec8ff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="index.html"><i></i>SYNDROME&nbsp;LAB</a>
+  <nav class="main"><a class="on" href="index.html" data-i18n="nav.play"></a><a href="results.html" data-i18n="nav.results"></a><a href="method.html" data-i18n="nav.method"></a></nav>
+  <button class="lang" type="button">ES</button>
+</div></header>
+
+<main class="wrap">
+<div class="hero">
+  <div class="tag" data-i18n="hero.tag"></div>
+  <h1 data-i18n="hero.h1"></h1>
+  <p class="lead" data-i18n="hero.lead"></p>
+  <p class="honest" data-i18n="hero.honest"></p>
+</div>
+
+<section id="play" aria-labelledby="play-h">
+  <h2 id="play-h" data-i18n="play.h"></h2>
+  <p data-i18n="play.sub"></p>
+  <div class="grid play">
+    <div class="card">
+      <div class="row" style="margin-bottom:10px">
+        <div class="seg" id="dist" role="group" aria-label="distance"><button type="button" data-d="3">d = 3</button><button type="button" data-d="5">d = 5</button></div>
+        <div class="seg" id="brush" role="group" aria-label="error type">
+          <button type="button" data-b="1"><span class="dot" style="background:var(--px)"></span>X</button>
+          <button type="button" data-b="2"><span class="dot" style="background:var(--pz)"></span>Z</button>
+          <button type="button" data-b="3"><span class="dot" style="background:var(--py)"></span>Y</button>
+        </div>
+        <button class="btn" id="random" type="button" data-i18n="play.random"></button>
+        <button class="btn" id="clear" type="button" data-i18n="play.clear"></button>
+      </div>
+      <svg class="lattice" id="main" role="img" aria-label="surface code lattice"></svg>
+      <div class="legend" style="margin-top:10px">
+        <span><span class="dot" style="background:var(--px)"></span><span data-i18n="leg.x"></span></span>
+        <span><span class="dot" style="background:var(--pz)"></span><span data-i18n="leg.z"></span></span>
+        <span><span class="dot" style="background:var(--py)"></span><span data-i18n="leg.y"></span></span>
+        <span><span class="dot" style="background:var(--accent-2);border-radius:2px"></span><span data-i18n="leg.s"></span></span>
+      </div>
+      <div class="row" style="margin-top:12px" id="presets"><span class="small" data-i18n="play.presets"></span></div>
+    </div>
+    <div>
+      <div class="steps" id="steps">
+        <button type="button" data-s="1"><b>01</b><span data-i18n="step.1"></span></button>
+        <button type="button" data-s="2"><b>02</b><span data-i18n="step.2"></span></button>
+        <button type="button" data-s="3"><b>03</b><span data-i18n="step.3"></span></button>
+        <button type="button" data-s="4"><b>04</b><span data-i18n="step.4"></span></button>
+      </div>
+      <p class="explain" id="explain" aria-live="polite"></p>
+      <div class="row" style="margin:4px 0 12px"><button class="btn primary" id="replay" type="button" data-i18n="play.replay"></button></div>
+      <div class="grid" style="grid-template-columns:1fr 1fr">
+        <div class="card" id="p-mwpm">
+          <h3><span class="dot" style="background:var(--s-mwpm)"></span>MWPM</h3>
+          <svg class="lattice static" role="img" aria-label="MWPM correction"></svg>
+          <div class="verdict" style="margin-top:8px"></div>
+          <p class="small" style="margin:8px 0 0" data-info></p>
+        </div>
+        <div class="card" id="p-nn">
+          <h3><span class="dot" style="background:var(--s-cnn)"></span><span data-i18n="play.net"></span></h3>
+          <svg class="lattice static" role="img" aria-label="neural network correction"></svg>
+          <div class="verdict" style="margin-top:8px"></div>
+          <div class="kv" style="margin-top:8px" id="probs"></div>
+          <p class="small" style="margin:8px 0 0" data-info></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mc" aria-labelledby="mc-h">
+  <h2 id="mc-h" data-i18n="mc.h"></h2>
+  <p data-i18n="mc.sub"></p>
+  <div class="card">
+    <div class="row">
+      <label class="small" for="mcp" data-i18n="mc.p"></label>
+      <input type="range" id="mcp" min="1" max="20" step="1" value="10"><b id="mcpv">10%</b>
+      <button class="btn primary" id="mcrun" type="button" data-i18n="mc.run"></button>
+      <span class="small" id="mcn"></span>
+    </div>
+    <div class="grid g3" style="margin-top:14px">
+      <div><h3><span class="dot" style="background:var(--s-mwpm)"></span>MWPM</h3><div class="stat" id="mc-m">–</div><div class="small" id="mc-mci"></div></div>
+      <div><h3><span class="dot" style="background:var(--s-cnn)"></span><span data-i18n="play.net"></span></h3><div class="stat" id="mc-n">–</div><div class="small" id="mc-nci"></div></div>
+      <div><h3 data-i18n="mc.disagree"></h3><p class="small" id="mc-d" style="margin:0"></p></div>
+    </div>
+    <p class="small" style="margin:12px 0 0" data-i18n="mc.note"></p>
+  </div>
+</section>
+
+<section aria-labelledby="what-h">
+  <h2 id="what-h" data-i18n="what.h"></h2>
+  <div class="grid g3" style="margin-top:12px">
+    <div class="card"><h3 data-i18n="what.1h"></h3><p data-i18n="what.1"></p></div>
+    <div class="card"><h3 data-i18n="what.2h"></h3><p data-i18n="what.2"></p></div>
+    <div class="card"><h3 data-i18n="what.3h"></h3><p data-i18n="what.3"></p></div>
+  </div>
+  <p style="margin-top:16px" data-i18n="what.more"></p>
+</section>
+</main>
+
+<footer><div class="wrap"><p data-i18n="foot.1"></p><p data-i18n="foot.2"></p></div></footer>
+<script src="js/i18n.js"></script>
+<script src="js/qec.js"></script>
+<script src="js/play.js"></script>
+</body>
+</html>

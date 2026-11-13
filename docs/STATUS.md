@@ -48,4 +48,10 @@
 
 ## Estado del CI
 
-Ver el final de este fichero tras el último push (se actualiza a mano).
+El flujo `tests` de GitHub Actions (Python 3.12 + Node 20, PyTorch de CPU) **pasó en
+GitHub** para el commit `8f7c424` (ejecución n.º 1, 2 min). Los commits posteriores
+lanzan el mismo flujo: comprueba en la pestaña Actions que el último está en verde.
+El flujo `pages` no se ha ejecutado nunca (solo se dispara en `main`).
+
+Fallo encontrado y corregido en la revisión final: en móvil, al tocar un qubit, el
+anillo de foco del navegador se dibujaba como un disco blanco enorme sobre el chip.

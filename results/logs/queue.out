@@ -1,5 +1,3 @@
-16 jobs, 4 workers
-rt_d3_s0 done
-cnn_d3_s0 done
-cnn_d3_s2 done
-cnn_d3_s1 done
+12 jobs, 4 workers
+rt_d3_s2 done
+rt_d3_s1 done

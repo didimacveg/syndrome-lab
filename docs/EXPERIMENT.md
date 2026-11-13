@@ -122,3 +122,13 @@ amplía**: se publica como está y se explica.
 - H4: *correlated matching* es más difícil de superar que MWPM.
 - H5: las redes son entre 10 y 1000 veces más lentas que PyMatching por disparo.
 - H6: con ruido distinto las redes empeoran más que MWPM informado.
+
+## 10. Desviaciones respecto a este diseño (añadido después, 13 nov 2026)
+
+El texto anterior no se ha modificado. Lo que se hizo distinto, con sus motivos, está
+en `DECISIONS.md` (D15, D16, D17): 200 000 disparos de test en d = 3 en lugar de
+500 000; RT de d = 5 con 2 semillas; RT de d = 7 no entrenada; puntos de control en
+el entrenamiento. El presupuesto real fue de 12,4 horas de CPU para los 13 modelos
+de ruido de circuito (tope previsto: unas 14 horas de CPU repartidas en 4 núcleos).
+Resultado de las hipótesis: H1 confirmada, H2 a medias, H3 confirmada (solo CNN),
+H4 confirmada, H5 confirmada, H6 refutada en d = 3 y mixta en d = 5.

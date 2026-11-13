@@ -9,7 +9,7 @@
     'r.head.h': ['The short version', 'La versión corta'],
     'r.head.p': ['Logical errors of the best network divided by those of MWPM, at a physical error rate of {p}. Below 1 the network wins. Above 1 it loses.', 'Errores lógicos de la mejor red divididos entre los de MWPM, con una tasa de error físico de {p}. Por debajo de 1 gana la red. Por encima, pierde.'],
     'r.head.note': ['Brackets: 95% paired bootstrap interval, failures pooled over training seeds.', 'Entre corchetes: intervalo bootstrap emparejado al 95 %, fallos agregados sobre las semillas de entrenamiento.'],
-    'r.tile': ['distance {d} · {net} vs MWPM', 'distancia {d} · {net} frente a MWPM'], 'r.win': ['network wins', 'gana la red'], 'r.lose': ['network loses', 'pierde la red'], 'r.tie': ['no significant difference', 'sin diferencia significativa'],
+    'r.tile': ['distance {d} · {net} vs MWPM', 'distancia {d} · {net} frente a MWPM'], 'r.tilecorr': ['against correlated matching', 'frente a emparejamiento correlacionado'], 'r.win': ['network wins', 'gana la red'], 'r.lose': ['network loses', 'pierde la red'], 'r.tie': ['no significant difference', 'sin diferencia significativa'],
     'r.main.h': ['Logical error rate against physical error rate', 'Tasa de error lógico frente a tasa de error físico'],
     'r.main.p': ['Lower is better. Shaded bands are 95% Wilson intervals. Faint dots are individual training seeds. Hover or tap for values.', 'Más bajo es mejor. Las bandas son intervalos de Wilson al 95 %. Los puntos tenues son semillas individuales. Pasa el cursor o toca para ver los valores.'],
     'r.corr': ['Correlated matching', 'Emparej. correlacionado'], 'r.vs': ['against', 'frente a'],
@@ -66,8 +66,8 @@
       const blk = R.main[d], i = blk.ps.indexOf(P0);
       const cands = ['cnn', 'rt'].filter(k => blk.ratio[k + '|mwpm']).map(k => [k, blk.ratio[k + '|mwpm'][i]]).sort((a, b) => a[1].ratio - b[1].ratio);
       if (!cands.length) return '';
-      const [k, r] = cands[0], v = verdict(r);
-      return `<div class="card"><h3>${I18N.t('r.tile', { d, net: N[k] })}</h3><div class="stat">${f3(r.ratio)}× <small>[${f3(r.lo)}, ${f3(r.hi)}]</small></div><div class="verdict ${v === 'win' ? 'ok' : v === 'lose' ? 'bad' : ''}" style="margin-top:10px"><b>${v === 'win' ? '✓' : v === 'lose' ? '✗' : '≈'}</b>${I18N.t(v === 'win' ? 'r.win' : v === 'lose' ? 'r.lose' : 'r.tie')}</div></div>`;
+      const [k, r] = cands[0], v = verdict(r), c = blk.ratio[k + '|corr'][i];
+      return `<div class="card"><h3>${I18N.t('r.tile', { d, net: N[k] })}</h3><div class="stat">${f3(r.ratio)}× <small>[${f3(r.lo)}, ${f3(r.hi)}]</small></div><div class="verdict ${v === 'win' ? 'ok' : v === 'lose' ? 'bad' : ''}" style="margin-top:10px"><b>${v === 'win' ? '✓' : v === 'lose' ? '✗' : '≈'}</b>${I18N.t(v === 'win' ? 'r.win' : v === 'lose' ? 'r.lose' : 'r.tie')}</div><p class="small" style="margin:8px 0 0">${I18N.t('r.tilecorr')}: <b class="${verdict(c) === 'win' ? 'okc' : verdict(c) === 'lose' ? 'badc' : ''}">${f3(c.ratio)}×</b> [${f3(c.lo)}, ${f3(c.hi)}]</p></div>`;
     }).join('') : `<p>${I18N.t('r.pending')}</p>`;
     // main small multiples
     legend('#leg-main', ['mwpm', 'corr', 'cnn', 'rt'].map(k => [COL[k], N[k]]));

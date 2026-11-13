@@ -1,4 +1,17 @@
-[rt d=5 s=0] step 1000/20000 loss 0.3819 val 0.2288 (mwpm 0.0509) 395s
-[rt d=5 s=0] step 2000/20000 loss 0.3434 val 0.1934 (mwpm 0.0509) 788s
-[rt d=5 s=0] step 3000/20000 loss 0.3153 val 0.1737 (mwpm 0.0509) 1179s
-[rt d=5 s=0] step 4000/20000 loss 0.2985 val 0.1666 (mwpm 0.0509) 1573s
+resuming from step 4000
+[rt d=5 s=0] step 5000/20000 loss 0.2913 val 0.1585 (mwpm 0.0509) 1821s
+[rt d=5 s=0] step 6000/20000 loss 0.2893 val 0.1558 (mwpm 0.0509) 2084s
+[rt d=5 s=0] step 7000/20000 loss 0.2795 val 0.1492 (mwpm 0.0509) 2335s
+[rt d=5 s=0] step 8000/20000 loss 0.2715 val 0.1383 (mwpm 0.0509) 2596s
+[rt d=5 s=0] step 9000/20000 loss 0.2635 val 0.1323 (mwpm 0.0509) 2794s
+[rt d=5 s=0] step 10000/20000 loss 0.2525 val 0.1300 (mwpm 0.0509) 2985s
+[rt d=5 s=0] step 11000/20000 loss 0.2517 val 0.1278 (mwpm 0.0509) 3181s
+[rt d=5 s=0] step 12000/20000 loss 0.2485 val 0.1181 (mwpm 0.0509) 3369s
+[rt d=5 s=0] step 13000/20000 loss 0.2387 val 0.1154 (mwpm 0.0509) 3570s
+[rt d=5 s=0] step 14000/20000 loss 0.2396 val 0.1112 (mwpm 0.0509) 3762s
+[rt d=5 s=0] step 15000/20000 loss 0.2283 val 0.1091 (mwpm 0.0509) 3944s
+[rt d=5 s=0] step 16000/20000 loss 0.2251 val 0.1079 (mwpm 0.0509) 4133s
+[rt d=5 s=0] step 17000/20000 loss 0.2295 val 0.1072 (mwpm 0.0509) 4325s
+[rt d=5 s=0] step 18000/20000 loss 0.2251 val 0.1061 (mwpm 0.0509) 4521s
+[rt d=5 s=0] step 19000/20000 loss 0.2281 val 0.1064 (mwpm 0.0509) 4710s
+[rt d=5 s=0] step 20000/20000 loss 0.2281 val 0.1063 (mwpm 0.0509) 4901s

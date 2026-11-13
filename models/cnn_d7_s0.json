@@ -1,0 +1,149 @@
+{
+ "kind": "cnn",
+ "distance": 7,
+ "rounds": 7,
+ "seed": 0,
+ "steps": 12000,
+ "batch": 256,
+ "lr": 0.002,
+ "noise": "si1000",
+ "ps": [
+  0.001,
+  0.002,
+  0.003,
+  0.004,
+  0.005,
+  0.006,
+  0.008,
+  0.01
+ ],
+ "samples": 3072000,
+ "parameters": 561033,
+ "train_seconds": 3514.6,
+ "val_mwpm": 0.05115,
+ "log": [
+  {
+   "step": 600,
+   "loss": 0.48489,
+   "val_fail": 0.32865,
+   "seconds": 181.4
+  },
+  {
+   "step": 1200,
+   "loss": 0.4094,
+   "val_fail": 0.26635,
+   "seconds": 352.6
+  },
+  {
+   "step": 1800,
+   "loss": 0.36849,
+   "val_fail": 0.2374,
+   "seconds": 530.7
+  },
+  {
+   "step": 2400,
+   "loss": 0.35025,
+   "val_fail": 0.21375,
+   "seconds": 707.3
+  },
+  {
+   "step": 3000,
+   "loss": 0.33749,
+   "val_fail": 0.2079,
+   "seconds": 887.2
+  },
+  {
+   "step": 3600,
+   "loss": 0.3299,
+   "val_fail": 0.19045,
+   "seconds": 1070.1
+  },
+  {
+   "step": 4200,
+   "loss": 0.32246,
+   "val_fail": 0.18665,
+   "seconds": 1244.8
+  },
+  {
+   "step": 4800,
+   "loss": 0.30798,
+   "val_fail": 0.17845,
+   "seconds": 1424.2
+  },
+  {
+   "step": 5400,
+   "loss": 0.30424,
+   "val_fail": 0.1727,
+   "seconds": 1602.3
+  },
+  {
+   "step": 6000,
+   "loss": 0.29783,
+   "val_fail": 0.17015,
+   "seconds": 1774.4
+  },
+  {
+   "step": 6600,
+   "loss": 0.29735,
+   "val_fail": 0.16815,
+   "seconds": 1948.0
+  },
+  {
+   "step": 7200,
+   "loss": 0.28617,
+   "val_fail": 0.1605,
+   "seconds": 2116.5
+  },
+  {
+   "step": 7800,
+   "loss": 0.29217,
+   "val_fail": 0.1554,
+   "seconds": 2285.9
+  },
+  {
+   "step": 8400,
+   "loss": 0.28513,
+   "val_fail": 0.15285,
+   "seconds": 2457.0
+  },
+  {
+   "step": 9000,
+   "loss": 0.27957,
+   "val_fail": 0.15135,
+   "seconds": 2633.7
+  },
+  {
+   "step": 9600,
+   "loss": 0.2791,
+   "val_fail": 0.1502,
+   "seconds": 2811.1
+  },
+  {
+   "step": 10200,
+   "loss": 0.27849,
+   "val_fail": 0.14885,
+   "seconds": 2985.7
+  },
+  {
+   "step": 10800,
+   "loss": 0.27927,
+   "val_fail": 0.1468,
+   "seconds": 3165.3
+  },
+  {
+   "step": 11400,
+   "loss": 0.28122,
+   "val_fail": 0.14655,
+   "seconds": 3340.8
+  },
+  {
+   "step": 12000,
+   "loss": 0.27081,
+   "val_fail": 0.14685,
+   "seconds": 3514.6
+  }
+ ],
+ "resumed_at": [],
+ "torch": "2.15.0+cu132",
+ "threads": 1
+}

@@ -35,7 +35,7 @@ report: figures
 	$(PY) scripts/build_report.py
 
 content:
-	$(PY) scripts/make_content.py
+	node scripts/make_content.js
 
 serve:
 	$(PY) -m http.server 8000 --directory web

@@ -1,16 +1,28 @@
 {
   "noise": "si1000",
-  "p_grid": [0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.008, 0.010],
+  "p_grid": [
+    0.001,
+    0.002,
+    0.003,
+    0.004,
+    0.005,
+    0.006,
+    0.008,
+    0.01
+  ],
   "batch": 256,
   "lr": 0.002,
   "test_seed": 20261124,
-  "test_shots": {"3": 200000, "5": 200000, "7": 200000},
+  "test_shots": {
+    "3": 200000,
+    "5": 200000,
+    "7": 200000
+  },
   "jobs": [
     {"kind": "cnn", "d": 3, "seeds": [0, 1, 2], "steps": 20000, "model": {"channels": 32, "blocks": 2}},
-    {"kind": "rt",  "d": 3, "seeds": [0, 1, 2], "steps": 30000, "model": {"dim": 64, "heads": 4}},
+    {"kind": "rt", "d": 3, "seeds": [0, 1, 2], "steps": 30000, "model": {"dim": 64, "heads": 4}},
     {"kind": "cnn", "d": 5, "seeds": [0, 1, 2], "steps": 40000, "model": {"channels": 16, "blocks": 2}},
-    {"kind": "rt",  "d": 5, "seeds": [0, 1, 2], "steps": 20000, "model": {"dim": 48, "heads": 4}},
-    {"kind": "cnn", "d": 7, "seeds": [0, 1],    "steps": 12000, "model": {"channels": 16, "blocks": 2}},
-    {"kind": "rt",  "d": 7, "seeds": [0, 1],    "steps": 6000,  "model": {"dim": 48, "heads": 4}}
+    {"kind": "rt", "d": 5, "seeds": [0, 1], "steps": 20000, "model": {"dim": 48, "heads": 4}},
+    {"kind": "cnn", "d": 7, "seeds": [0, 1], "steps": 12000, "model": {"channels": 16, "blocks": 2}}
   ]
 }

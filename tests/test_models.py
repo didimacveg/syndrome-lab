@@ -85,3 +85,25 @@ def test_mismatched_weights_do_not_change_the_data():
     b = evaluate.evaluate_point(3, "sd", 0.006, 5000, seed=3, weights_from=("si1000", 0.006))
     assert a["weights_from"] is None and b["weights_from"] == ["si1000", 0.006]
     assert abs(a["fails"]["mwpm"] - b["fails"]["mwpm"]) < 200
+
+
+def test_interrupted_training_resumes_from_checkpoint(tmp_path):
+    out = tmp_path / "m.pt"
+    kw = dict(batch=64, model_kw=dict(channels=8, blocks=1), val_shots=500, out=out)
+    # a checkpoint is written at every log point except the last one
+    train.train("cnn", 3, seed=2, steps=40, log_every=20, **kw)
+    assert out.exists() and not (tmp_path / "m.pt.ckpt").exists()
+    _, meta = models.load(out)
+    assert meta["resumed_at"] == [] and meta["samples"] == 40 * 64
+    # simulate a crash: leave a checkpoint behind, then run again with a longer schedule
+    import os
+    import torch as _t
+    net, _ = models.load(out)
+    opt = _t.optim.AdamW(net.parameters(), lr=1e-3, weight_decay=1e-4)
+    _t.save(dict(model=net.state_dict(), opt=opt.state_dict(), step=40, log=meta["log"], run=0.5, elapsed=1.0,
+                 resumed=[]), str(out) + ".ckpt")
+    os.remove(out)
+    _, meta2 = train.train("cnn", 3, seed=2, steps=60, log_every=20, **kw)
+    assert meta2["resumed_at"] == [40]
+    assert [e["step"] for e in meta2["log"]] == [20, 40, 60]
+    assert not os.path.exists(str(out) + ".ckpt")

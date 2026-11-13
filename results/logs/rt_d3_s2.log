@@ -1,0 +1,2 @@
+[rt d=3 s=2] step 1500/30000 loss 0.1702 val 0.0659 (mwpm 0.0480) 103s
+[rt d=3 s=2] step 3000/30000 loss 0.1631 val 0.0561 (mwpm 0.0480) 206s

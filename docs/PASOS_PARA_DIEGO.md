@@ -109,8 +109,8 @@ los intervalos de confianza.
 2. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 3. Pestaña **Actions**, flujo **pages**, **Run workflow** (rama `main`).
 4. En un minuto la web estará en `https://didimacveg.github.io/qec-lab/`.
-5. Comprueba que el flujo **tests** está en verde. No se ha podido ejecutar en
-   GitHub antes de entregarte el proyecto con certeza (ver `STATUS.md`).
+5. Comprueba en la pestaña **Actions** que el flujo **tests** está en verde para el
+   último commit (pasó en GitHub durante la construcción; ver `STATUS.md`).
 
 ## 6. Decidir el nombre
 

@@ -8,7 +8,7 @@
   const frame = (n, head, sub, body, foot) => {
     root.innerHTML = `<div class="cb"><span class="brand"><i></i>SYNDROME LAB</span><span class="n">${n}</span></div>
       <div class="ch">${head}</div>${sub ? `<p class="cs">${sub}</p>` : ''}<div class="cv">${body}</div>
-      <div class="cf"><span>${foot || 'Open reproduction, not new research. Built with AI assistance.'}</span><b>github.com/didimacveg/qec-lab</b></div>`;
+      <div class="cf"><span>${foot || 'Open reproduction, not new research. Built with AI assistance.'}</span><b>github.com/didimacveg/syndrome-lab</b></div>`;
   };
   const svg = id => `<svg class="lattice static" id="${id}"></svg>`;
   const load = async d => { const [lay, mod] = await Promise.all([fetch(`data/layout_d${d}.json`).then(r => r.json()), fetch(`data/capacity_d${d}.json`).then(r => r.json())]); return { code: QEC.buildCode(lay), model: QEC.loadModel(mod) }; };

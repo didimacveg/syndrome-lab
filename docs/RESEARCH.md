@@ -15,9 +15,9 @@ Fecha: 12 de noviembre de 2026. Escrito antes de la primera línea de código.
 que las citas se han comprobado mediante búsqueda web (títulos, autores y resúmenes
 devueltos por el buscador). Cada entrada lleva una marca:
 
-- **[V]** título, autores e identificador confirmados por búsqueda web en esta sesión.
-- **[M]** citado de memoria; el identificador y los detalles deben comprobarse a mano
-  antes de usarlos en público (está apuntado en `PASOS_PARA_DIEGO.md`).
+- **[V]** título, autores e identificador confirmados, por búsqueda web o por
+  comprobación manual del autor (14 nov 2026).
+- **[M]** citado de memoria y sin comprobar; no debe usarse en público sin verificarlo.
 
 No se cita ninguna cifra de un artículo que no se haya podido contrastar.
 
@@ -35,17 +35,17 @@ preciso y rapidísimo (en superconductores, del orden de 1 µs por ronda).
 ### 1.2 Decodificadores clásicos de referencia
 
 - **MWPM (emparejamiento perfecto de peso mínimo).** Dennis, Kitaev, Landahl y
-  Preskill, *Topological quantum memory*, J. Math. Phys. 43, 4452 (2002) **[M]**.
-  Es el estándar del código de superficie.
+  Preskill, *Topological quantum memory*, J. Math. Phys. 43, 4452 (2002) **[V]**.
+  Referencia clásica; es el estándar del código de superficie.
 - **PyMatching 2 / Sparse Blossom.** Higgott y Gidney, *Sparse Blossom: correcting a
-  million errors per core second with minimum-weight matching*, arXiv:2303.15933
-  **[M]**. Es la implementación que usamos. Desde la versión 2.3 incluye también
+  million errors per core second with minimum-weight matching*, Quantum 9, 1600
+  (2025), arXiv:2303.15933 **[V]**. Es la implementación que usamos. Desde la versión 2.3 incluye también
   *correlated matching* (`enable_correlations=True`), que comprobamos en el paquete
   instalado (2.4.0).
 - **Stim.** Gidney, *Stim: a fast stabilizer circuit simulator*, Quantum 5, 497
-  (2021) **[M]**. Simulador con el que generamos todos los datos.
+  (2021) **[V]**. Referencia clásica. Simulador con el que generamos todos los datos.
 - **Modelo de ruido SI1000.** Gidney, Newman, Fowler y Broughton, *A fault-tolerant
-  honeycomb memory*, Quantum 5, 605 (2021), arXiv:2108.10457 **[M]**. Define el ruido
+  honeycomb memory*, Quantum 5, 605 (2021), arXiv:2108.10457 **[V]**. Referencia clásica. Define el ruido
   «inspirado en superconductores» que usamos como ruido principal.
 - **Experimento de referencia en hardware.** Google Quantum AI, *Quantum error
   correction below the surface code threshold*, arXiv:2408.13687 **[V]** (título).
@@ -83,12 +83,12 @@ preciso y rapidísimo (en superconductores, del orden de 1 µs por ronda).
   compensa una red frente a los decodificadores clásicos.
 - **QuTech / TU Delft.** Varbanov, Serra-Peralta, Byfield y Terhal, *Neural network
   decoder for near-term surface-code experiments*, arXiv:2307.03280, Phys. Rev.
-  Research 7, 013029 (2025) **[V]** (título y revista; autores **[M]**). Red
+  Research 7, 013029 (2025) **[V]**. Red
   recurrente para distancias pequeñas con ruido de circuito, usando Stim y
   PyMatching como referencia. Es el antecedente más cercano a este proyecto y es de
   Delft.
 - **Red de grafos.** Lange et al., *Data-driven decoding of quantum error correcting
-  codes using graph neural networks*, arXiv:2307.01241 **[M]**.
+  codes using graph neural networks*, arXiv:2307.01241 **[V]**.
 - **Antecedentes históricos [M].** Torlai y Melko (2017); Krastanov y Jiang (2017);
   Baireuther, O'Brien, Tarasinski y Beenakker (2018, red LSTM, Leiden/Delft);
   Chamberland y Ronagh (2018).
@@ -112,7 +112,7 @@ Lo que la literatura deja claro, y lo que esperamos reproducir a pequeña escala
 | `TensorBFS/BPDecoderPlus` | Propagación de creencias en PyTorch (no es una red aprendida) | vía buscador |
 | `quantumlib/tesseract-decoder` | Decodificador de búsqueda de Google, Apache-2.0 | vía buscador |
 | `yuewuo/qec-lego-bench` | Banco de pruebas de decodificadores | existe (búsqueda en GitHub) |
-| Repos de Varbanov et al. y Lange et al. | Código de sus artículos | **[M]**, sin comprobar |
+| Repos de Varbanov et al. y Lange et al. | Código de sus artículos | **no comprobado** |
 
 Ya existen, además, muchos repos pequeños de «Stim + PyMatching + una red»
 (ver apartado 4). **El espacio está concurrido.** No pretendemos ser los primeros.
@@ -184,8 +184,7 @@ Búsqueda en GitHub (API de búsqueda de repositorios, 12 nov 2026):
 Sobrio, técnico y exacto: el síndrome es precisamente el dato que entra al
 decodificador. Sigue la lógica de RAAN (un término técnico del dominio).
 
-El repositorio sigue llamándose `qec-lab` hasta que Diego lo renombre (un clic; ver
-`PASOS_PARA_DIEGO.md`). El código ya usa `syndromelab`.
+El repositorio ya se ha renombrado a `syndrome-lab`; el código usa `syndromelab`.
 
 Limitación de la comprobación: se ha mirado GitHub y PyPI, no registros de marcas ni
 dominios.

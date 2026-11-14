@@ -24,11 +24,11 @@ sudo apt install -y git python3 python3-venv python3-pip nodejs make
 ```
 
 ```bash
-git clone https://github.com/didimacveg/qec-lab.git
+git clone https://github.com/didimacveg/syndrome-lab.git
 ```
 
 ```bash
-cd qec-lab
+cd syndrome-lab
 ```
 
 ```bash
@@ -108,11 +108,11 @@ los intervalos de confianza.
    **Merge**. (O pídeselo a Claude: «crea el pull request».)
 2. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 3. Pestaña **Actions**, flujo **pages**, **Run workflow** (rama `main`).
-4. En un minuto la web estará en `https://didimacveg.github.io/qec-lab/`.
+4. En un minuto la web estará en `https://didimacveg.github.io/syndrome-lab/`.
 5. Comprueba en la pestaña **Actions** que el flujo **tests** está en verde para el
    último commit (pasó en GitHub durante la construcción; ver `STATUS.md`).
 
-## 6. Decidir el nombre
+## 6. Decidir el nombre (hecho: el repositorio ya se llama `syndrome-lab`)
 
 Propuesta: **Syndrome Lab** (motivos en `docs/RESEARCH.md` §4). Si te convence:
 

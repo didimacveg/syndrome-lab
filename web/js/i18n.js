@@ -20,8 +20,8 @@
     'nav.play': ['Play', 'Jugar'], 'nav.results': ['Results', 'Resultados'], 'nav.method': ['Method', 'Método'],
     'foot.1': ['Syndrome Lab is an open, small-scale, CPU-only <strong>reproduction</strong> of known results on neural decoding of the surface code. It is not new research.',
       'Syndrome Lab es una <strong>reproducción</strong> abierta, a pequeña escala y en CPU, de resultados conocidos sobre decodificación neuronal del código de superficie. No es investigación nueva.'],
-    'foot.2': ['Built by Diego Macías Vega with the help of AI tools. Simulated with <a href="https://github.com/quantumlib/Stim">Stim</a>, baseline by <a href="https://github.com/oscarhiggott/PyMatching">PyMatching</a>. Code and data: <a href="https://github.com/didimacveg/qec-lab">GitHub</a>, Apache-2.0.',
-      'Hecho por Diego Macías Vega con ayuda de herramientas de IA. Simulado con <a href="https://github.com/quantumlib/Stim">Stim</a>, referencia con <a href="https://github.com/oscarhiggott/PyMatching">PyMatching</a>. Código y datos: <a href="https://github.com/didimacveg/qec-lab">GitHub</a>, Apache-2.0.'],
+    'foot.2': ['Built by Diego Macías Vega with the help of AI tools. Simulated with <a href="https://github.com/quantumlib/Stim">Stim</a>, baseline by <a href="https://github.com/oscarhiggott/PyMatching">PyMatching</a>. Code and data: <a href="https://github.com/didimacveg/syndrome-lab">GitHub</a>, Apache-2.0.',
+      'Hecho por Diego Macías Vega con ayuda de herramientas de IA. Simulado con <a href="https://github.com/quantumlib/Stim">Stim</a>, referencia con <a href="https://github.com/oscarhiggott/PyMatching">PyMatching</a>. Código y datos: <a href="https://github.com/didimacveg/syndrome-lab">GitHub</a>, Apache-2.0.'],
   });
   window.I18N = I18N;
   document.addEventListener('DOMContentLoaded', () => {

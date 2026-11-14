@@ -58,7 +58,7 @@ Below 1 the network wins.
 ## Reproduce
 
 ```bash
-git clone https://github.com/didimacveg/qec-lab && cd qec-lab
+git clone https://github.com/didimacveg/syndrome-lab && cd syndrome-lab
 python3 -m venv .venv && source .venv/bin/activate
 pip install torch --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements.txt
@@ -93,11 +93,10 @@ AlphaQubit: Bausch et al., *Nature* (2024), doi:10.1038/s41586-024-08148-8.
 AlphaQubit 2: Senior et al., arXiv:2512.07737. Mamba decoders: Lee, Hur and Park,
 arXiv:2510.22724. QuTech: Varbanov et al., *Phys. Rev. Research* 7, 013029 (2025).
 Stim: Gidney, *Quantum* 5, 497 (2021). PyMatching: Higgott and Gidney,
-arXiv:2303.15933. SI1000: Gidney et al., *Quantum* 5, 605 (2021). Full list with
+*Quantum* 9, 1600 (2025), arXiv:2303.15933. SI1000: Gidney et al., *Quantum* 5, 605 (2021). Full list with
 verification status: `docs/RESEARCH.md`.
 
 ## Credits
 
 Built by Diego Macías Vega (17, Madrid) with substantial help from AI coding tools.
-Apache-2.0. The repository is called `qec-lab` for now; the proposed name is
-Syndrome Lab (`docs/RESEARCH.md` §4).
+Apache-2.0. Name rationale: `docs/RESEARCH.md` §4.

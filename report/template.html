@@ -19,7 +19,7 @@
 </style></head><body>
 <h1>Syndrome Lab: a small, open, CPU-only reproduction of neural decoding for the surface code</h1>
 <div class="authors">Diego Macías Vega</div>
-<div class="aff">Secondary-school student, Madrid · built with substantial assistance from AI coding tools · {{DATE}}<br>Code, data and trained weights: github.com/didimacveg/qec-lab</div>
+<div class="aff">Secondary-school student, Madrid · built with substantial assistance from AI coding tools · {{DATE}}<br>Code, data and trained weights: github.com/didimacveg/syndrome-lab</div>
 
 <div class="abstract"><b>Abstract.</b> Decoding is a bottleneck of quantum error correction, and neural-network decoders are an active research topic. This report documents a deliberately small reproduction of a known result, and makes no claim of novelty. On the rotated surface code at distances 3, 5 and 7, under SI1000 circuit-level noise, we train two compact neural decoders on a 4-core CPU (a 3D convolutional network and a recurrent transformer) and compare them with minimum-weight perfect matching (MWPM) and with correlated matching, both from PyMatching, on identical test shots, with several training seeds, Wilson confidence intervals and paired statistics. The setup is validated against published thresholds. The outcome reproduces the pattern reported in the literature: the networks outperform matching at the smallest distance, and their advantage erodes as the distance grows under a fixed, small training budget, while their decoding latency on a CPU is orders of magnitude worse. All wins and losses are reported. Everything can be regenerated with one command.</div>
 

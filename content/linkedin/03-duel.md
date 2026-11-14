@@ -10,7 +10,7 @@ One example proves nothing, though. I searched for this case on purpose, and I c
 
 The fair way to compare is thousands of random errors, the same ones for both decoders. That is the next post.
 
-Try both presets: [link]
+Try both presets: https://didimacveg.github.io/syndrome-lab/
 
 Built with help from AI tools. A reproduction, not new research.
 

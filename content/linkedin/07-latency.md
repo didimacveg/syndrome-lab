@@ -12,7 +12,7 @@ Is that a fair fight? No, and I want to be straight about it. PyMatching is heav
 
 What I took from this: accuracy is only one axis. Speed, hardware cost and robustness to noise you did not train on are the others. My recurrent model, for example, fails when run for more rounds than it was trained on.
 
-All of this is on the results page, losses included: [link]
+All of this is on the results page, losses included: https://didimacveg.github.io/syndrome-lab/
 
 Built with help from AI tools. A reproduction, not new research.
 

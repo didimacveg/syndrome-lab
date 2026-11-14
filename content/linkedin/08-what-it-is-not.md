@@ -23,8 +23,8 @@ If you work on quantum error correction and see something wrong, please tell me.
 
 I start university in September 2027 and I want to work on this.
 
-Site: [link]
-Report (PDF): [link]
-Repository: [link]
+Site: https://didimacveg.github.io/syndrome-lab/
+Report (PDF): https://github.com/didimacveg/syndrome-lab/blob/main/report/syndrome-lab-report.pdf
+Repository: https://github.com/didimacveg/syndrome-lab
 
 #QuantumErrorCorrection #QuantumComputing #OpenScience #MachineLearning

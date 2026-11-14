@@ -18,7 +18,7 @@ I also changed the plan along the way (fewer seeds where the compute did not fit
 
 The chart shows the ratio network / MWPM with 95% intervals. Below the dashed line the network wins.
 
-Method page: [link]
+Method page: https://didimacveg.github.io/syndrome-lab/
 
 Built with help from AI tools. A reproduction, not new research.
 

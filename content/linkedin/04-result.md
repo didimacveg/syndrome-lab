@@ -16,7 +16,7 @@ Why does it fall apart at distance 7? Budget. The problem grows much faster than
 
 This matches what the literature reports. It is a reproduction, not a discovery.
 
-Full results with confidence intervals: [link]
+Full results with confidence intervals: https://didimacveg.github.io/syndrome-lab/
 
 Built with help from AI tools.
 

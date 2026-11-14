@@ -14,7 +14,7 @@ In my simulation, with the standard decoder and a noise model inspired by superc
 
 A better decoder moves the crossing to the right. That is why decoders matter.
 
-Interactive version: [link]
+Interactive version: https://didimacveg.github.io/syndrome-lab/
 
 Built with help from AI tools. A reproduction, not new research.
 

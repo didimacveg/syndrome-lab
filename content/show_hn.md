@@ -32,7 +32,7 @@ I used AI coding tools heavily to build this and I say so in the repo. I've trie
 
 Everything reruns with `make all` (hours on 4 cores) or `make all SCALE=0.01` (minutes, meaningless numbers, but it exercises the pipeline).
 
-Repo: https://github.com/didimacveg/qec-lab
+Repo: https://github.com/didimacveg/syndrome-lab
 
 **Notes for Diego (do not post):**
 

@@ -10,7 +10,7 @@ The pattern of checks that fire is called the syndrome. One detail took me a whi
 
 And if a chain runs all the way across the chip, nothing lights up at all. That is a logical error: undetectable, and fatal for the computation.
 
-In the lab you can draw these chains yourself and watch the checks respond: [link]
+In the lab you can draw these chains yourself and watch the checks respond: https://didimacveg.github.io/syndrome-lab/
 
 Built with help from AI tools. A reproduction for learning, not new research.
 

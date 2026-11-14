@@ -52,8 +52,8 @@
 <li>Thresholds from distances 3 to 7 are finite-size crossings, not asymptotic thresholds.</li>
 </ul>
 <h2>8. Reproduce it</h2>
-<pre>git clone https://github.com/didimacveg/qec-lab
-cd qec-lab
+<pre>git clone https://github.com/didimacveg/syndrome-lab
+cd syndrome-lab
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 make test      # unit tests and validation against published values
@@ -108,8 +108,8 @@ make all       # data, baselines, training, evaluation, figures, site data (hour
 <li>Los umbrales con distancias 3 a 7 son cruces a tamaño finito, no umbrales asintóticos.</li>
 </ul>
 <h2>8. Reprodúcelo</h2>
-<pre>git clone https://github.com/didimacveg/qec-lab
-cd qec-lab
+<pre>git clone https://github.com/didimacveg/syndrome-lab
+cd syndrome-lab
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 make test      # tests unitarios y validación contra valores publicados

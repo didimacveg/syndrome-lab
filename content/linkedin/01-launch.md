@@ -10,7 +10,7 @@ Short answer: the network wins on the smallest code, and loses as the code grows
 
 I am 17 and in my last year of secondary school in Madrid. I built this with a lot of help from AI coding tools, and I say so everywhere in the project.
 
-Try it: [link to the site]
-Code, data and trained models: [link to the repo]
+Try it: https://didimacveg.github.io/syndrome-lab/
+Code, data and trained models: https://github.com/didimacveg/syndrome-lab
 
 #QuantumComputing #QuantumErrorCorrection #MachineLearning #OpenScience
